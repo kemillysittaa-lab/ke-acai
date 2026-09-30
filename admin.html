@@ -2374,8 +2374,13 @@ async function excluirAdicional(id) {
 
 function atualizarFinanceiro() {
 
+    const pedidosValidos = pedidos.filter(
+    p => (p.status || "").toLowerCase() !== "cancelado"
+);
+    
     const vendas =
-        pedidos.reduce(
+        
+      pedidosValidos.reduce(
             (s, p) =>
                 s +
                 numero(p.valor_total),
@@ -2383,8 +2388,8 @@ function atualizarFinanceiro() {
         );
 
 
-    const custos =
-        pedidos.reduce(
+  const custos =
+    pedidosValidos.reduce(
             (s, p) =>
                 s +
                 numero(p.custo),
@@ -2415,7 +2420,7 @@ function atualizarFinanceiro() {
     document.getElementById(
         "financeiroPedidos"
     ).textContent =
-        pedidos.length;
+       pedidosValidos.length
 
 }
 
