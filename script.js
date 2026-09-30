@@ -17,12 +17,7 @@ let carrinho = [];
 let cupomAplicado = null;
 let valorDesconto = 0;
 
-async function validarCupom() {} document
-    .getElementById("aplicar-cupom")
-    .addEventListener(
-        "click",
-        validarCupom
-    );
+const campo = document.getElementById("codigo-cupom");
     const campo = document.getElementById("codigo-cupom");
     const mensagem = document.getElementById("mensagem-cupom");
 
@@ -94,7 +89,12 @@ async function validarCupom() {} document
         "Cupom aplicado com sucesso! 💜";
 
     atualizarCarrinho();
-}
+}document
+    .getElementById("aplicar-cupom")
+    .addEventListener(
+        "click",
+        validarCupom
+    );
 
 
 // FORMATA VALORES
