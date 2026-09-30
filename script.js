@@ -2,9 +2,99 @@
 // KE AÇAÍ - DELIVERY
 // ======================================
 
+const SUPABASE_URL = "https://ncukfroazgjnwvrmzxyu.supabase.co";
+const SUPABASE_KEY = "sb_publishable_T9oyWTb31mxJybxM09Z81A_AoXqfdig";
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
 const whatsapp = "5516996211605";
 
 let carrinho = [];
+
+let cupomAplicado = null;
+let valorDesconto = 0;
+
+async function validarCupom() {} document
+    .getElementById("aplicar-cupom")
+    .addEventListener(
+        "click",
+        validarCupom
+    );
+    const campo = document.getElementById("codigo-cupom");
+    const mensagem = document.getElementById("mensagem-cupom");
+
+    const codigo = campo.value.trim().toUpperCase();
+
+    if (!codigo) {
+        mensagem.textContent = "Digite um cupom.";
+        return;
+    }
+
+    const total = carrinho.reduce(
+        function(soma, item) {
+            return soma + item.preco;
+        },
+        0
+    );
+
+    if (total <= 0) {
+        mensagem.textContent = "Adicione produtos ao carrinho primeiro.";
+        return;
+    }
+
+    const { data, error } = await supabaseClient
+        .rpc("validar_cupom", {
+            p_codigo: codigo,
+            p_total: total
+        });
+
+    if (error) {
+        console.error(error);
+        mensagem.textContent = "Não foi possível validar o cupom.";
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        cupomAplicado = null;
+        valorDesconto = 0;
+
+        document.getElementById("valor-desconto").textContent =
+            dinheiro(0);
+
+        mensagem.textContent =
+            "Cupom inválido ou não disponível.";
+
+        atualizarCarrinho();
+        return;
+    }
+
+    const cupom = data[0];
+
+    cupomAplicado = cupom;
+
+    if (cupom.tipo === "percentual") {
+        valorDesconto =
+            total * (Number(cupom.valor) / 100);
+    } else {
+        valorDesconto =
+            Number(cupom.valor);
+    }
+
+    if (valorDesconto > total) {
+        valorDesconto = total;
+    }
+
+    document.getElementById("valor-desconto").textContent =
+        "-" + dinheiro(valorDesconto);
+
+    mensagem.textContent =
+        "Cupom aplicado com sucesso! 💜";
+
+    atualizarCarrinho();
+}
 
 
 // FORMATA VALORES
@@ -377,8 +467,11 @@ function atualizarCarrinho() {
     );
 
 
-    totalElemento.innerText =
-        dinheiro(total);
+ const totalComDesconto =
+    Math.max(0, total - valorDesconto);
+
+totalElemento.innerText =
+    dinheiro(totalComDesconto);
 
 }
 
@@ -614,10 +707,22 @@ document
             );
 
 
-            mensagem +=
-                "💵 *TOTAL DOS PRODUTOS: " +
-                dinheiro(total) +
-                "*\n";
+         const totalComDesconto =
+    Math.max(0, total - valorDesconto);
+
+if (valorDesconto > 0) {
+    mensagem +=
+        "🎟️ *Desconto (" +
+        cupomAplicado.codigo +
+        "): -" +
+        dinheiro(valorDesconto) +
+        "*\n";
+}
+
+mensagem +=
+    "💵 *TOTAL DOS PRODUTOS: " +
+    dinheiro(totalComDesconto) +
+    "*\n";
 
 
             mensagem +=
