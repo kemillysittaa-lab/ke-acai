@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel | Ke Açaí</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f5f3f7;
+    color: #2b1835;
+}
+
+header {
+    background: linear-gradient(135deg, #3b0a57, #741b8c);
+    color: white;
+    padding: 24px 18px;
+}
+
+header h1 {
+    font-size: 26px;
+}
+
+header p {
+    margin-top: 5px;
+    opacity: .85;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+.resumo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+}
+
+.card span {
+    display: block;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 8px;
+}
+
+.card strong {
+    font-size: 24px;
+    color: #54106e;
+}
+
+h2 {
+    margin: 25px 0 15px;
+}
+
+.menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.botao {
+    background: white;
+    border: none;
+    border-radius: 15px;
+    padding: 22px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #43105b;
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0,0,0,.07);
+}
+
+.botao:hover {
+    transform: translateY(-2px);
+}
+
+.pedido {
+    background: white;
+    padding: 18px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.06);
+}
+
+.pedido-topo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.status {
+    background: #fff0c2;
+    color: #7c5900;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.vazio {
+    color: #777;
+}
+
+.novo-pedido {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background: #651181;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 16px 22px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 18px rgba(0,0,0,.2);
+}
+
+@media(max-width: 750px) {
+    .resumo {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .menu {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🍇 Painel Ke Açaí</h1>
+    <p>Controle da sua loja</p>
+</header>
+
+<div class="container">
+
+    <h2>Resumo de hoje</h2>
+
+    <div class="resumo">
+
+        <div class="card">
+            <span>Pedidos</span>
+            <strong id="totalPedidos">0</strong>
+        </div>
+
+        <div class="card">
+            <span>Vendas</span>
+            <strong id="totalVendas">R$ 0,00</strong>
+        </div>
+
+        <div class="card">
+            <span>Custos</span>
+            <strong id="totalCustos">R$ 0,00</strong>
+        </div>
+
+        <div class="card">
+            <span>Lucro estimado</span>
+            <strong id="lucro">R$ 0,00</strong>
+        </div>
+
+    </div>
+
+    <h2>Gerenciar</h2>
+
+    <div class="menu">
+
+        <button class="botao">
+            📦 Pedidos e comandas
+        </button>
+
+        <button class="botao">
+            🍧 Produtos e preços
+        </button>
+
+        <button class="botao">
+            💰 Financeiro
+        </button>
+
+        <button class="botao">
+            📊 Relatórios
+        </button>
+
+        <button class="botao">
+            🎁 Promoções
+        </button>
+
+        <button class="botao">
+            ⚙️ Configurações
+        </button>
+
+    </div>
+
+    <h2>Pedidos recentes</h2>
+
+    <div id="listaPedidos">
+
+        <div class="pedido">
+            <p class="vazio">
+                Nenhum pedido registrado ainda.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<button class="novo-pedido" onclick="novoPedido()">
+    + Novo pedido
+</button>
+
+<script>
+
+let pedidos = [];
+
+function dinheiro(valor) {
+    return valor.toLocaleString(
+        "pt-BR",
+        {
+            style: "currency",
+            currency: "BRL"
+        }
+    );
+}
+
+function novoPedido() {
+
+    const cliente = prompt("Nome do cliente:");
+
+    if (!cliente) {
+        return;
+    }
+
+    const valorTexto = prompt(
+        "Qual o valor total do pedido?"
+    );
+
+    const custoTexto = prompt(
+        "Qual foi o custo aproximado desse pedido?"
+    );
+
+    const valor = Number(
+        String(valorTexto).replace(",", ".")
+    );
+
+    const custo = Number(
+        String(custoTexto).replace(",", ".")
+    );
+
+    if (isNaN(valor) || isNaN(custo)) {
+        alert("Digite valores válidos.");
+        return;
+    }
+
+    const pedido = {
+        numero: pedidos.length + 1,
+        cliente: cliente,
+        valor: valor,
+        custo: custo,
+        status: "Novo"
+    };
+
+    pedidos.push(pedido);
+
+    atualizarPainel();
+}
+
+function atualizarPainel() {
+
+    const quantidade = pedidos.length;
+
+    const vendas = pedidos.reduce(
+        (total, pedido) => total + pedido.valor,
+        0
+    );
+
+    const custos = pedidos.reduce(
+        (total, pedido) => total + pedido.custo,
+        0
+    );
+
+    const lucro = vendas - custos;
+
+    document.getElementById("totalPedidos").textContent =
+        quantidade;
+
+    document.getElementById("totalVendas").textContent =
+        dinheiro(vendas);
+
+    document.getElementById("totalCustos").textContent =
+        dinheiro(custos);
+
+    document.getElementById("lucro").textContent =
+        dinheiro(lucro);
+
+    mostrarPedidos();
+}
+
+function mostrarPedidos() {
+
+    const lista = document.getElementById("listaPedidos");
+
+    if (pedidos.length === 0) {
+        lista.innerHTML =
+            '<div class="pedido"><p class="vazio">Nenhum pedido registrado ainda.</p></div>';
+
+        return;
+    }
+
+    lista.innerHTML = "";
+
+    [...pedidos].reverse().forEach(pedido => {
+
+        lista.innerHTML += `
+        <div class="pedido">
+
+            <div class="pedido-topo">
+
+                <strong>
+                    Pedido #${String(pedido.numero).padStart(4,"0")}
+                </strong>
+
+                <span class="status">
+                    ${pedido.status}
+                </span>
+
+            </div>
+
+            <p>
+                <strong>Cliente:</strong>
+                ${pedido.cliente}
+            </p>
+
+            <p>
+                <strong>Total:</strong>
+                ${dinheiro(pedido.valor)}
+            </p>
+
+            <p>
+                <strong>Lucro estimado:</strong>
+                ${dinheiro(pedido.valor - pedido.custo)}
+            </p>
+
+        </div>
+        `;
+    });
+}
+
+</script>
+
+</body>
+</html>
