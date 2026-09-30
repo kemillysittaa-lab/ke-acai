@@ -819,7 +819,9 @@ const enderecoCompleto =
 
 const totalFinal =
     Math.max(0, total - valorDesconto);
-
+        
+console.log("CHEGOU NO SUPABASE");
+        
 const { error: erroPedido } = await supabaseClient
     .from("Pedidos")
     .insert({
