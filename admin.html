@@ -152,7 +152,23 @@ h2 {
     <p>Controle da sua loja</p>
 </header>
 
-<div class="container">
+    <div id="loginAdmin" class="container">
+    <div class="card">
+        <h2>🔐 Acesso administrativo</h2>
+
+        <input type="email" id="emailAdmin" placeholder="Seu e-mail">
+
+        <input type="password" id="senhaAdmin" placeholder="Sua senha">
+
+        <button class="botao" onclick="entrarAdmin()">
+            Entrar
+        </button>
+
+        <p id="erroLogin"></p>
+    </div>
+</div>
+
+<div class="container" id="painelAdmin" style="display: none;">
 
     <h2>Resumo de hoje</h2>
 
@@ -227,9 +243,39 @@ h2 {
 <button class="novo-pedido" onclick="novoPedido()">
     + Novo pedido
 </button>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
+    const SUPABASE_URL = "https://ncukfroazgjnwvrmzxyu.supabase.co";
+
+    const SUPABASE_KEY = "sb_publishable_T9oyWTb31mxJybxM09Z81A_AoXqfdig";
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function entrarAdmin() {
+    const email = document.getElementById("emailAdmin").value;
+    const senha = document.getElementById("senhaAdmin").value;
+    const erro = document.getElementById("erroLogin");
+
+    erro.textContent = "";
+
+    const { error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: senha
+    });
+
+    if (error) {
+        erro.textContent = "E-mail ou senha incorretos.";
+        return;
+    }
+
+    document.getElementById("loginAdmin").style.display = "none";
+    document.getElementById("painelAdmin").style.display = "block";
+    alert("Login realizado com sucesso! 💜");
+}
+    
 let pedidos = [];
 
 function dinheiro(valor) {
