@@ -820,31 +820,7 @@ const enderecoCompleto =
 const totalFinal =
     Math.max(0, total - valorDesconto);
         
-console.log("CHEGOU NO SUPABASE");
-        
-const { error: erroPedido } = await supabaseClient
-    .from("Pedidos")
-    .insert({
-        cliente: nome,
-        telefone: telefone,
-        itens: itensPedido,
-        valor_total: totalFinal,
-        forma_pagamento: formaPagamento,
-        status: "Novo",
-        endereco: enderecoCompleto,
-        taxa_entrega: 0,
-        observacoes: observacao || null
-    });
 
-if (erroPedido) {
-    console.error(erroPedido);
-
-    alert(
-        "Não foi possível registrar o pedido. Tente novamente."
-    );
-
-
-}
             // WHATSAPP
 
             const texto =
