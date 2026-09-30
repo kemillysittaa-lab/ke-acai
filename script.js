@@ -533,7 +533,7 @@ document
     .getElementById("finalizar")
     .addEventListener(
         "click",
-    async function() {
+    function() {
 
 
             // VERIFICAR CARRINHO
