@@ -4,254 +4,181 @@
     box-sizing: border-box;
 }
 
-
 html {
     scroll-behavior: smooth;
 }
 
-
 body {
     font-family: Arial, Helvetica, sans-serif;
-
-    background:
-        linear-gradient(
-            180deg,
-            #150812,
-            #0d060c
-        );
-
+    background: linear-gradient(180deg, #150812, #0d060c);
     color: white;
 }
-
 
 /* CABEÇALHO */
 
 header {
     background: rgba(24, 8, 21, 0.96);
-
     padding: 18px;
-
     text-align: center;
-
     border-bottom: 1px solid #5f294f;
 }
 
-
 .logo h1 {
     color: #f4c45f;
-
     font-size: 38px;
 }
 
-
 .logo p {
     color: #ef5ca8;
-
     margin-top: 4px;
 }
-
 
 nav {
     margin-top: 18px;
 }
 
-
 nav a {
     display: inline-block;
-
     color: white;
-
     text-decoration: none;
-
     font-weight: bold;
-
     margin: 6px 10px;
 }
-
 
 nav a:hover {
     color: #f4c45f;
 }
 
-
 /* INÍCIO */
 
 .inicio {
     min-height: 520px;
-
     display: flex;
-
     flex-direction: column;
-
     justify-content: center;
-
     align-items: center;
-
     text-align: center;
-
     padding: 50px 20px;
-
-    background:
-        radial-gradient(
-            circle at top,
-            #6f105e,
-            #160914 65%
-        );
+    background: radial-gradient(circle at top, #6f105e, #160914 65%);
 }
-
 
 .destaque {
     color: #ef5ca8;
-
     font-weight: bold;
-
     margin-bottom: 15px;
 }
 
-
 .inicio h2 {
     max-width: 750px;
-
     font-size: 60px;
-
     line-height: 1;
-
     margin-bottom: 20px;
 }
-
 
 .inicio h2 span {
     color: #f4c45f;
 }
 
-
 .inicio > p:not(.destaque) {
     max-width: 600px;
-
     color: #d8c8d2;
-
     font-size: 18px;
-
     line-height: 1.5;
-
     margin-bottom: 25px;
 }
 
-
 .botao-principal {
     background: #f4c45f;
-
     color: #291020;
-
     text-decoration: none;
-
     font-weight: bold;
-
     padding: 15px 25px;
-
     border-radius: 12px;
 }
 
+/* AVISO LOJA */
+
+.aviso-loja {
+    max-width: 900px;
+    margin: 25px auto 0;
+    padding: 17px 20px;
+    background: #701c47;
+    border: 1px solid #ef5ca8;
+    border-radius: 14px;
+    text-align: center;
+    font-weight: bold;
+}
 
 /* SEÇÕES */
 
 .secao {
     max-width: 1100px;
-
     margin: auto;
-
     padding: 60px 20px;
 }
 
-
 .titulo-secao {
     text-align: center;
-
     margin-bottom: 30px;
 }
 
-
 .titulo-secao > p {
     color: #ef5ca8;
-
     font-size: 13px;
-
     font-weight: bold;
-
     letter-spacing: 2px;
-
     margin-bottom: 8px;
 }
-
 
 .titulo-secao h2 {
     color: #f4c45f;
-
     font-size: 36px;
-
     margin-bottom: 8px;
 }
-
 
 .titulo-secao span {
     color: #d8c8d2;
 }
 
+.carregando {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #d8c8d2;
+    padding: 30px;
+}
 
 /* PRODUTOS */
 
 .produtos {
     display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
+    grid-template-columns: repeat(2, 1fr);
     gap: 18px;
 }
 
-
 .produto {
-    background:
-        linear-gradient(
-            180deg,
-            #2b1126,
-            #1b0c18
-        );
-
+    background: linear-gradient(180deg, #2b1126, #1b0c18);
     border: 1px solid #5e2852;
-
     border-radius: 22px;
-
     padding: 25px;
 }
 
-
 .icone-produto {
     font-size: 38px;
-
     margin-bottom: 12px;
 }
 
-
 .produto h3 {
     color: #f4c45f;
-
     font-size: 25px;
-
     margin-bottom: 10px;
 }
 
-
 .produto p {
     color: #d8c8d2;
-
     line-height: 1.5;
-
     min-height: 48px;
-
     margin-bottom: 18px;
 }
-
 
 /* SELECTS E CAMPOS */
 
@@ -259,22 +186,14 @@ select,
 input,
 textarea {
     width: 100%;
-
     padding: 13px;
-
     background: #160914;
-
     color: white;
-
     border: 1px solid #663158;
-
     border-radius: 10px;
-
     outline: none;
-
     font-size: 15px;
 }
-
 
 select:focus,
 input:focus,
@@ -282,350 +201,264 @@ textarea:focus {
     border-color: #ef5ca8;
 }
 
-
 .produto select {
     margin-bottom: 12px;
 }
-
 
 /* BOTÕES */
 
 button {
     width: 100%;
-
     padding: 14px;
-
     border: none;
-
     border-radius: 11px;
-
     background: #ef5ca8;
-
     color: white;
-
     font-size: 15px;
-
     font-weight: bold;
-
     cursor: pointer;
 }
 
-
 button:hover {
     background: #f4c45f;
-
     color: #291020;
 }
 
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
 
 /* MONTE SEU KE */
 
 .montagem {
     max-width: 750px;
-
     margin: auto;
-
     background: #281022;
-
     border: 1px solid #724064;
-
     border-radius: 22px;
-
     padding: 28px;
 }
 
-
 .montagem h3 {
     color: #ef5ca8;
-
     margin: 20px 0 12px;
 }
-
 
 #tamanho-monte {
     margin-bottom: 15px;
 }
 
-
 .lista-adicionais {
     display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
+    grid-template-columns: repeat(2, 1fr);
     gap: 9px;
 }
 
-
 .adicional {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     gap: 10px;
-
     background: #371530;
-
     padding: 13px;
-
     border-radius: 10px;
-
     cursor: pointer;
 }
 
-
 .adicional input {
     width: auto;
-
     margin-right: 7px;
 }
 
-
 .adicional strong {
     color: #f4c45f;
-
     font-size: 13px;
 }
 
-
 .total-montagem {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     background: #150812;
-
     padding: 18px;
-
     border-radius: 12px;
-
     margin: 22px 0;
 }
 
-
 .total-montagem strong {
     color: #f4c45f;
-
     font-size: 25px;
 }
-
 
 /* CARRINHO */
 
 .caixa-carrinho {
     max-width: 750px;
-
     margin: auto;
-
     background: #281022;
-
     border-radius: 22px;
-
     padding: 25px;
-
     border: 1px solid #633057;
 }
 
-
 #carrinho-vazio {
     color: #cdbcc8;
-
     text-align: center;
-
     padding: 20px;
 }
-
 
 .item-carrinho {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     gap: 15px;
-
     background: #35142f;
-
     padding: 15px;
-
     border-radius: 12px;
-
     margin-bottom: 10px;
 }
 
-
 .item-carrinho h4 {
     color: #f4c45f;
-
     margin-bottom: 5px;
 }
 
-
 .item-carrinho p {
     color: #d8c8d2;
-
     font-size: 14px;
-
     margin-top: 3px;
 }
 
-
 .preco-item {
     color: #f4c45f;
-
     font-weight: bold;
-
     text-align: right;
 }
 
-
 .remover {
     width: auto;
-
     padding: 6px 9px;
-
     margin-top: 7px;
-
     background: #701c47;
-
     font-size: 12px;
 }
 
-
-.total-pedido {
+.total-pedido,
+.desconto-cupom {
     display: flex;
-
     justify-content: space-between;
-
     align-items: center;
-
     background: #150812;
-
     padding: 20px;
-
     border-radius: 12px;
-
     margin-top: 20px;
 }
 
-
 .total-pedido strong {
     color: #f4c45f;
-
     font-size: 25px;
 }
 
+.desconto-cupom strong {
+    color: #ef5ca8;
+}
+
+/* CUPOM */
+
+.cupom-area {
+    margin-top: 22px;
+}
+
+.cupom-area label {
+    display: block;
+    color: #f4c45f;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.cupom-linha {
+    display: grid;
+    grid-template-columns: 1fr 130px;
+    gap: 8px;
+}
+
+#mensagem-cupom {
+    margin-top: 8px;
+    color: #d8c8d2;
+    font-size: 14px;
+}
 
 .aviso-entrega {
     color: #d8c8d2;
-
     font-size: 14px;
-
     margin-top: 15px;
-
     text-align: center;
 }
-
 
 /* DADOS ENTREGA */
 
 .dados-entrega {
     max-width: 750px;
-
     margin: auto;
-
     background: #281022;
-
     padding: 28px;
-
     border-radius: 22px;
-
     border: 1px solid #633057;
 }
 
-
 .dados-entrega label {
     display: block;
-
     margin: 15px 0 7px;
-
     color: #f4c45f;
-
     font-weight: bold;
 }
 
-
 .duas-colunas {
     display: grid;
-
-    grid-template-columns:
-        1fr 2fr;
-
+    grid-template-columns: 1fr 2fr;
     gap: 12px;
 }
-
 
 #campo-troco {
     display: none;
 }
 
-
 #finalizar {
     margin-top: 25px;
-
     background: #25d366;
-
     color: #08160c;
-
     font-size: 17px;
 }
-
 
 #finalizar:hover {
     background: #1fbd5b;
 }
 
-
 .aviso-final {
     color: #bbaab6;
-
     text-align: center;
-
     font-size: 13px;
-
     margin-top: 12px;
 }
-
 
 /* RODAPÉ */
 
 footer {
     text-align: center;
-
     padding: 40px 20px;
-
     background: #0c050a;
-
     color: #cdbcc8;
 }
 
-
 footer h2 {
     color: #f4c45f;
-
     margin-bottom: 10px;
 }
-
 
 footer p {
     margin: 5px;
 }
-
 
 /* CELULAR */
 
@@ -635,26 +468,25 @@ footer p {
         font-size: 44px;
     }
 
-
     .produtos {
         grid-template-columns: 1fr;
     }
-
 
     .lista-adicionais {
         grid-template-columns: 1fr;
     }
 
-
     .duas-colunas {
         grid-template-columns: 1fr;
     }
 
+    .cupom-linha {
+        grid-template-columns: 1fr;
+    }
 
     .secao {
         padding: 45px 15px;
     }
-
 
     .montagem,
     .caixa-carrinho,
@@ -662,9 +494,7 @@ footer p {
         padding: 20px;
     }
 
-
     .item-carrinho {
         align-items: flex-start;
     }
-
 }
