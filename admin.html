@@ -2547,7 +2547,7 @@ const cancelados = filtrados.filter(
 );
 
 
- const custos =
+const vendas =
     validos.reduce(
             (s, p) =>
                 s +
@@ -2557,7 +2557,7 @@ const cancelados = filtrados.filter(
 
 
     const custos =
-        filtrados.reduce(
+   validos.reduce(
             (s, p) =>
                 s +
                 numero(p.custo),
