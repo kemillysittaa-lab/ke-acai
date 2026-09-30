@@ -1,147 +1,325 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel | Ke Açaí</title>
+
+<title>Painel Ke Açaí</title>
 
 <style>
+
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 
 body {
+    margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background: #f5f3f7;
-    color: #2b1835;
+    background: #f5f2f5;
+    color: #291020;
 }
 
 header {
-    background: linear-gradient(135deg, #3b0a57, #741b8c);
+    background: linear-gradient(135deg, #5d1052, #9a176e);
     color: white;
-    padding: 24px 18px;
+    padding: 25px 20px;
+    text-align: center;
 }
 
 header h1 {
-    font-size: 26px;
+    margin: 0;
+    font-size: 30px;
 }
 
 header p {
-    margin-top: 5px;
-    opacity: .85;
+    margin: 7px 0 0;
+    opacity: .9;
 }
 
 .container {
-    max-width: 1100px;
-    margin: auto;
-    padding: 20px;
-}
-
-.resumo {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-bottom: 25px;
+    width: min(1100px, 94%);
+    margin: 25px auto;
 }
 
 .card {
     background: white;
     padding: 20px;
     border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    box-shadow: 0 4px 18px rgba(0,0,0,.08);
+    margin-bottom: 18px;
 }
 
-.card span {
-    display: block;
+.login {
+    max-width: 430px;
+    margin: 50px auto;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    margin: 6px 0 12px;
+    font-size: 15px;
+}
+
+input[type="checkbox"] {
+    width: auto;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    border: 0;
+    cursor: pointer;
+}
+
+.botao {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    background: #72115e;
+    color: white;
+    font-weight: bold;
     font-size: 14px;
-    color: #777;
-    margin-bottom: 8px;
 }
 
-.card strong {
+.botao:hover {
+    background: #971978;
+}
+
+.botao-secundario {
+    background: #eee;
+    color: #3a1732;
+}
+
+.botao-perigo {
+    background: #b3264d;
+}
+
+.botao-pequeno {
+    width: auto;
+    padding: 8px 12px;
+    margin: 3px;
+}
+
+.topo-painel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.topo-painel h2 {
+    margin: 0;
+}
+
+.sair {
+    width: auto;
+    background: #eee;
+    color: #5d1052;
+}
+
+.resumo {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.resumo .card {
+    margin: 0;
+    text-align: center;
+}
+
+.resumo strong {
+    display: block;
+    color: #72115e;
     font-size: 24px;
-    color: #54106e;
-}
-
-h2 {
-    margin: 25px 0 15px;
+    margin-top: 7px;
 }
 
 .menu {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
+    gap: 12px;
+    margin-bottom: 25px;
 }
 
-.botao {
+.menu .botao {
+    min-height: 65px;
+    font-size: 15px;
+}
+
+.area {
+    display: none;
+}
+
+.area.ativa {
+    display: block;
+}
+
+.voltar {
+    width: auto;
+    margin-bottom: 15px;
+}
+
+.pedido,
+.item-admin {
     background: white;
-    border: none;
-    border-radius: 15px;
-    padding: 22px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    color: #43105b;
-    text-align: left;
-    box-shadow: 0 4px 12px rgba(0,0,0,.07);
-}
-
-.botao:hover {
-    transform: translateY(-2px);
-}
-
-.pedido {
-    background: white;
-    padding: 18px;
-    border-radius: 15px;
+    border-radius: 14px;
+    padding: 17px;
     margin-bottom: 12px;
-    box-shadow: 0 3px 10px rgba(0,0,0,.06);
+    box-shadow: 0 3px 12px rgba(0,0,0,.06);
 }
 
-.pedido-topo {
+.pedido-topo,
+.item-topo {
     display: flex;
     justify-content: space-between;
+    gap: 12px;
+    align-items: center;
     margin-bottom: 10px;
 }
 
 .status {
-    background: #fff0c2;
-    color: #7c5900;
-    padding: 6px 10px;
+    background: #f3d5e9;
+    color: #72115e;
+    padding: 5px 9px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: bold;
 }
 
 .vazio {
+    text-align: center;
     color: #777;
+    padding: 15px;
+}
+
+.grade-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.grade-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.linha {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.linha .botao {
+    width: auto;
+}
+
+.tamanho-linha,
+.adicional-linha {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 8px;
+    align-items: center;
+    padding: 9px;
+    background: #faf7fa;
+    border-radius: 10px;
+    margin-top: 7px;
+}
+
+.tamanho-linha input,
+.adicional-linha input {
+    margin: 0;
+}
+
+.valor-positivo {
+    color: #14834f;
+}
+
+.valor-negativo {
+    color: #b3264d;
+}
+
+.erro {
+    color: #b3264d;
+    font-size: 14px;
+}
+
+.sucesso {
+    color: #14834f;
+    font-size: 14px;
+}
+
+.aviso {
+    background: #fff4ce;
+    border: 1px solid #efd67c;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+}
+
+h2, h3 {
+    color: #5d1052;
 }
 
 .novo-pedido {
     position: fixed;
     right: 20px;
     bottom: 20px;
-    background: #651181;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 16px 22px;
+    width: auto;
+    background: #f0b93c;
+    color: #2c1727;
+    padding: 14px 18px;
+    border-radius: 30px;
     font-weight: bold;
-    cursor: pointer;
     box-shadow: 0 5px 18px rgba(0,0,0,.2);
 }
 
 @media(max-width: 750px) {
-    .resumo {
-        grid-template-columns: repeat(2, 1fr);
-    }
 
-    .menu {
+    .resumo,
+    .menu,
+    .grade-2,
+    .grade-3 {
         grid-template-columns: 1fr;
     }
+
+    .tamanho-linha,
+    .adicional-linha {
+        grid-template-columns: 1fr;
+    }
+
+    .pedido-topo,
+    .item-topo,
+    .topo-painel {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
 }
+
 </style>
 </head>
 
@@ -152,385 +330,2799 @@ h2 {
     <p>Controle da sua loja</p>
 </header>
 
-    <div id="loginAdmin" class="container">
+
+<!-- LOGIN -->
+
+<div id="loginAdmin" class="container login">
+
     <div class="card">
-        <h2>🔐 Acesso administrativo</h2>
 
-        <input type="email" id="emailAdmin" placeholder="Seu e-mail">
+        <h2>Entrar no painel 💜</h2>
 
-        <input type="password" id="senhaAdmin" placeholder="Sua senha">
+        <label>E-mail</label>
+        <input
+            type="email"
+            id="emailAdmin"
+            placeholder="Seu e-mail"
+        >
 
-        <button class="botao" onclick="entrarAdmin()">
+        <label>Senha</label>
+        <input
+            type="password"
+            id="senhaAdmin"
+            placeholder="Sua senha"
+        >
+
+        <button
+            class="botao"
+            onclick="entrarAdmin()"
+        >
             Entrar
         </button>
 
-        <p id="erroLogin"></p>
+        <p id="erroLogin" class="erro"></p>
+
     </div>
+
 </div>
 
-<div class="container" id="painelAdmin" style="display: none;">
 
-    <h2>Resumo de hoje</h2>
+<!-- PAINEL -->
+
+<div id="painelAdmin" class="container" style="display:none;">
+
+    <div class="topo-painel">
+
+        <div>
+            <h2>Visão geral 💜</h2>
+            <p>Resumo da Ke Açaí.</p>
+        </div>
+
+        <button
+            class="botao sair"
+            onclick="sairAdmin()"
+        >
+            Sair
+        </button>
+
+    </div>
+
 
     <div class="resumo">
 
         <div class="card">
-            <span>Pedidos</span>
-            <strong id="totalPedidos">0</strong>
+            <span>Pedidos hoje</span>
+            <strong id="resumoPedidos">0</strong>
         </div>
 
         <div class="card">
-            <span>Vendas</span>
-            <strong id="totalVendas">R$ 0,00</strong>
+            <span>Vendas hoje</span>
+            <strong id="resumoVendas">R$ 0,00</strong>
         </div>
 
         <div class="card">
-            <span>Custos</span>
-            <strong id="totalCustos">R$ 0,00</strong>
+            <span>Custos hoje</span>
+            <strong id="resumoCustos">R$ 0,00</strong>
         </div>
 
         <div class="card">
-            <span>Lucro estimado</span>
-            <strong id="lucro">R$ 0,00</strong>
+            <span>Lucro hoje</span>
+            <strong id="resumoLucro">R$ 0,00</strong>
         </div>
 
     </div>
 
-    <h2>Gerenciar</h2>
 
     <div class="menu">
 
-        <button class="botao">
-            📦 Pedidos e comandas
+        <button class="botao" onclick="abrirArea('pedidos')">
+            🧾 Pedidos e comandas
         </button>
 
-        <button class="botao">
+        <button class="botao" onclick="abrirArea('produtos')">
             🍧 Produtos e preços
         </button>
 
-        <button class="botao">
+        <button class="botao" onclick="abrirArea('financeiro')">
             💰 Financeiro
         </button>
 
-        <button class="botao">
+        <button class="botao" onclick="abrirArea('relatorios')">
             📊 Relatórios
         </button>
 
-       <button class="botao" onclick="abrirPromocoes()">
-           🎁 Promoções
+        <button class="botao" onclick="abrirArea('promocoes')">
+            🎁 Promoções
         </button>
 
-        <button class="botao">
+        <button class="botao" onclick="abrirArea('configuracoes')">
             ⚙️ Configurações
         </button>
 
     </div>
 
+
     <h2>Pedidos recentes</h2>
 
-    <div id="listaPedidos">
+    <div id="listaPedidosRecentes">
+        <p class="vazio">Carregando pedidos...</p>
+    </div>
 
-        <div class="pedido">
-            <p class="vazio">
-                Nenhum pedido registrado ainda.
-            </p>
+</div>
+
+
+<!-- PEDIDOS -->
+
+<div id="area-pedidos" class="container area">
+
+    <button class="botao botao-secundario voltar" onclick="voltarPainel()">
+        ← Voltar
+    </button>
+
+    <h2>🧾 Pedidos e comandas</h2>
+
+    <div class="card">
+
+        <button class="botao" onclick="novoPedido()">
+            + Novo pedido manual
+        </button>
+
+    </div>
+
+    <div id="listaTodosPedidos">
+        <p class="vazio">Carregando...</p>
+    </div>
+
+</div>
+
+
+<!-- PRODUTOS -->
+
+<div id="area-produtos" class="container area">
+
+    <button class="botao botao-secundario voltar" onclick="voltarPainel()">
+        ← Voltar
+    </button>
+
+    <h2>🍧 Produtos e preços</h2>
+
+    <div class="card">
+
+        <h3>Novo produto</h3>
+
+        <label>Nome</label>
+        <input id="novoProdutoNome" placeholder="Ex.: Ke Morango">
+
+        <label>Descrição</label>
+        <textarea
+            id="novoProdutoDescricao"
+            placeholder="Ingredientes ou descrição"
+        ></textarea>
+
+        <button class="botao" onclick="adicionarProduto()">
+            + Adicionar produto
+        </button>
+
+    </div>
+
+    <div id="listaProdutosAdmin">
+        <p class="vazio">Carregando produtos...</p>
+    </div>
+
+
+    <div class="card">
+
+        <h3>Adicionais</h3>
+
+        <div class="grade-3">
+
+            <div>
+                <label>Nome</label>
+                <input id="novoAdicionalNome" placeholder="Ex.: Kiwi">
+            </div>
+
+            <div>
+                <label>Preço</label>
+                <input id="novoAdicionalPreco" type="number" step="0.01">
+            </div>
+
+            <div>
+                <label>Custo</label>
+                <input id="novoAdicionalCusto" type="number" step="0.01">
+            </div>
+
         </div>
+
+        <button class="botao" onclick="adicionarAdicional()">
+            + Adicionar adicional
+        </button>
+
+        <hr>
+
+        <div id="listaAdicionaisAdmin"></div>
 
     </div>
 
 </div>
 
-    <div id="areaPromocoes" class="container" style="display: none;">
+
+<!-- FINANCEIRO -->
+
+<div id="area-financeiro" class="container area">
+
+    <button class="botao botao-secundario voltar" onclick="voltarPainel()">
+        ← Voltar
+    </button>
+
+    <h2>💰 Financeiro</h2>
+
+    <div class="resumo">
+
+        <div class="card">
+            <span>Total vendido</span>
+            <strong id="financeiroVendas">R$ 0,00</strong>
+        </div>
+
+        <div class="card">
+            <span>Custos</span>
+            <strong id="financeiroCustos">R$ 0,00</strong>
+        </div>
+
+        <div class="card">
+            <span>Lucro</span>
+            <strong id="financeiroLucro">R$ 0,00</strong>
+        </div>
+
+        <div class="card">
+            <span>Pedidos</span>
+            <strong id="financeiroPedidos">0</strong>
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Resumo</h3>
+
+        <p>
+            Os valores são calculados com base nos pedidos
+            registrados no sistema.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- RELATÓRIOS -->
+
+<div id="area-relatorios" class="container area">
+
+    <button class="botao botao-secundario voltar" onclick="voltarPainel()">
+        ← Voltar
+    </button>
+
+    <h2>📊 Relatórios</h2>
+
+    <div class="card">
+
+        <div class="grade-2">
+
+            <div>
+                <label>Data inicial</label>
+                <input type="date" id="relatorioInicio">
+            </div>
+
+            <div>
+                <label>Data final</label>
+                <input type="date" id="relatorioFim">
+            </div>
+
+        </div>
+
+        <button class="botao" onclick="gerarRelatorio()">
+            Gerar relatório
+        </button>
+
+    </div>
+
+
+    <div class="resumo">
+
+        <div class="card">
+            <span>Pedidos</span>
+            <strong id="relPedidos">0</strong>
+        </div>
+
+        <div class="card">
+            <span>Vendas</span>
+            <strong id="relVendas">R$ 0,00</strong>
+        </div>
+
+        <div class="card">
+            <span>Custos</span>
+            <strong id="relCustos">R$ 0,00</strong>
+        </div>
+
+        <div class="card">
+            <span>Lucro</span>
+            <strong id="relLucro">R$ 0,00</strong>
+        </div>
+
+    </div>
+
+    <div class="card">
+        <p>
+            Ticket médio:
+            <strong id="relTicket">R$ 0,00</strong>
+        </p>
+    </div>
+
+</div>
+
+
+<!-- PROMOÇÕES -->
+
+<div id="area-promocoes" class="container area">
+
+    <button class="botao botao-secundario voltar" onclick="voltarPainel()">
+        ← Voltar
+    </button>
 
     <h2>🎁 Cupons e promoções</h2>
 
     <div class="card">
-        <h2>Novo cupom</h2>
 
-        <input type="text" id="cupomCodigo" placeholder="Código: BEMVINDO10">
+        <h3>Novo cupom</h3>
+
+        <label>Código</label>
+        <input id="cupomCodigo" placeholder="Ex.: BEMVINDO10">
+
+        <label>Tipo</label>
 
         <select id="cupomTipo">
             <option value="percentual">Desconto em %</option>
             <option value="fixo">Desconto em R$</option>
         </select>
 
-        <input type="number" id="cupomValor" placeholder="Valor do desconto">
+        <label>Valor</label>
+        <input id="cupomValor" type="number" step="0.01">
 
-        <input type="number" id="cupomMinimo" placeholder="Pedido mínimo">
+        <label>Pedido mínimo</label>
+        <input id="cupomMinimo" type="number" step="0.01">
 
-        <input type="datetime-local" id="cupomValidade">
+        <label>Validade</label>
+        <input id="cupomValidade" type="datetime-local">
 
-        <input type="number" id="cupomLimite" placeholder="Limite de usos">
+        <label>Limite de usos</label>
+        <input id="cupomLimite" type="number">
 
         <button class="botao" onclick="salvarCupom()">
             + Criar cupom
         </button>
+
     </div>
 
-    <h2>Cupons cadastrados</h2>
-
     <div id="listaCupons">
-        <p class="vazio">Nenhum cupom cadastrado.</p>
+        <p class="vazio">Carregando cupons...</p>
     </div>
 
 </div>
 
-<button class="novo-pedido" onclick="novoPedido()">
+
+<!-- CONFIGURAÇÕES -->
+
+<div id="area-configuracoes" class="container area">
+
+    <button class="botao botao-secundario voltar" onclick="voltarPainel()">
+        ← Voltar
+    </button>
+
+    <h2>⚙️ Configurações</h2>
+
+    <div class="card">
+
+        <label>Nome da loja</label>
+        <input id="configNomeLoja">
+
+        <label>WhatsApp</label>
+        <input id="configWhatsapp" placeholder="5516999999999">
+
+        <label>Taxa de entrega</label>
+        <input
+            id="configTaxaEntrega"
+            type="number"
+            step="0.01"
+        >
+
+        <label>
+            <input
+                id="configLojaAberta"
+                type="checkbox"
+            >
+            Loja aberta para pedidos
+        </label>
+
+        <br><br>
+
+        <label>Mensagem quando a loja estiver fechada</label>
+
+        <textarea
+            id="configMensagemFechado"
+            rows="3"
+        ></textarea>
+
+        <button class="botao" onclick="salvarConfiguracoes()">
+            Salvar configurações
+        </button>
+
+        <p id="configMensagem"></p>
+
+    </div>
+
+</div>
+
+
+<button
+    id="botaoNovoPedido"
+    class="novo-pedido"
+    onclick="novoPedido()"
+    style="display:none;"
+>
     + Novo pedido
 </button>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-    const SUPABASE_URL = "https://ncukfroazgjnwvrmzxyu.supabase.co";
+const SUPABASE_URL =
+    "https://ncukfroazgjnwvrmzxyu.supabase.co";
 
-    const SUPABASE_KEY = "sb_publishable_T9oyWTb31mxJybxM09Z81A_AoXqfdig";
+const SUPABASE_KEY =
+    "sb_publishable_T9oyWTb31mxJybxM09Z81A_AoXqfdig";
 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
-   async function entrarAdmin() {
-       
-    const email = document.getElementById("emailAdmin").value;
-    const senha = document.getElementById("senhaAdmin").value;
-    const erro = document.getElementById("erroLogin");
 
-    erro.textContent = "";
-
-    const { error } = await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: senha
-    });
-
-    if (error) {
-        erro.textContent = "E-mail ou senha incorretos.";
-        return;
-    }
-
-    document.getElementById("loginAdmin").style.display = "none";
-    document.getElementById("painelAdmin").style.display = "block";
-    alert("Login realizado com sucesso! 💜");
-}
-    function abrirPromocoes() {
-    document.getElementById("painelAdmin").style.display = "none";
-    document.getElementById("areaPromocoes").style.display = "block";
-    carregarCupons();
-}
-
-    async function salvarCupom() {
-    const codigo = document.getElementById("cupomCodigo").value.trim().toUpperCase();
-    const tipo = document.getElementById("cupomTipo").value;
-    const valor = Number(document.getElementById("cupomValor").value);
-    const pedidoMinimo = Number(document.getElementById("cupomMinimo").value || 0);
-    const validade = document.getElementById("cupomValidade").value;
-    const limiteUsos = document.getElementById("cupomLimite").value;
-
-    if (!codigo || !valor || valor <= 0) {
-        alert("Preencha o código e o valor do desconto.");
-        return;
-    }
-
-    const { error } = await supabaseClient
-        .from("Cupons")
-        .insert({
-            codigo: codigo,
-            tipo: tipo,
-            valor: valor,
-            ativo: true,
-            pedido_minimo: pedidoMinimo,
-            validade: validade || null,
-            limite_usos: limiteUsos ? Number(limiteUsos) : null,
-            usos: 0
-        });
-
-    if (error) {
-        console.error(error);
-        alert("Não foi possível criar o cupom.");
-        return;
-    }
-
-    alert("Cupom criado com sucesso! 🎁");
-    carregarCupons();
-}
-
-    async function carregarCupons() {
-    const lista = document.getElementById("listaCupons");
-
-    const { data, error } = await supabaseClient
-        .from("Cupons")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-    if (error) {
-        console.error(error);
-        lista.innerHTML = '<p class="vazio">Não foi possível carregar os cupons.</p>';
-        return;
-    }
-
-    if (!data || data.length === 0) {
-        lista.innerHTML = '<p class="vazio">Nenhum cupom cadastrado.</p>';
-        return;
-    }
-
-    lista.innerHTML = "";
-
-    data.forEach(cupom => {
-        const desconto = cupom.tipo === "percentual"
-            ? `${cupom.valor}%`
-            : dinheiro(Number(cupom.valor));
-
-        lista.innerHTML += `
-            <div class="pedido">
-                <div class="pedido-topo">
-                    <strong>${cupom.codigo}</strong>
-                    <span class="status">
-                        ${cupom.ativo ? "Ativo" : "Inativo"}
-                    </span>
-                </div>
-
-                <p><strong>Desconto:</strong> ${desconto}</p>
-                <p><strong>Pedido mínimo:</strong> ${dinheiro(Number(cupom.pedido_minimo || 0))}</p>
-                <p><strong>Usos:</strong> ${cupom.usos || 0}${cupom.limite_usos ? ` / ${cupom.limite_usos}` : ""}</p>
-            </div>
-        `;
-    });
-}
-
-    
 let pedidos = [];
+let produtosAdmin = [];
+let tamanhosAdmin = [];
+let adicionaisAdmin = [];
+let configuracaoId = null;
+
+
+// ==========================================
+// UTILIDADES
+// ==========================================
 
 function dinheiro(valor) {
-    return valor.toLocaleString(
+
+    return Number(valor || 0).toLocaleString(
         "pt-BR",
         {
             style: "currency",
             currency: "BRL"
         }
     );
+
 }
 
-function novoPedido() {
 
-    const cliente = prompt("Nome do cliente:");
+function esc(texto) {
 
-    if (!cliente) {
-        return;
-    }
+    const div =
+        document.createElement("div");
 
-    const valorTexto = prompt(
-        "Qual o valor total do pedido?"
-    );
+    div.textContent =
+        texto ?? "";
 
-    const custoTexto = prompt(
-        "Qual foi o custo aproximado desse pedido?"
-    );
+    return div.innerHTML;
 
-    const valor = Number(
-        String(valorTexto).replace(",", ".")
-    );
-
-    const custo = Number(
-        String(custoTexto).replace(",", ".")
-    );
-
-    if (isNaN(valor) || isNaN(custo)) {
-        alert("Digite valores válidos.");
-        return;
-    }
-
-    const pedido = {
-        numero: pedidos.length + 1,
-        cliente: cliente,
-        valor: valor,
-        custo: custo,
-        status: "Novo"
-    };
-
-    pedidos.push(pedido);
-
-    atualizarPainel();
 }
 
-function atualizarPainel() {
 
-    const quantidade = pedidos.length;
+function numero(valor) {
 
-    const vendas = pedidos.reduce(
-        (total, pedido) => total + pedido.valor,
-        0
+    return Number(valor || 0);
+
+}
+
+
+// ==========================================
+// LOGIN
+// ==========================================
+
+async function entrarAdmin() {
+
+    const email =
+        document.getElementById("emailAdmin")
+            .value.trim();
+
+    const senha =
+        document.getElementById("senhaAdmin")
+            .value;
+
+    const erro =
+        document.getElementById("erroLogin");
+
+    erro.textContent = "";
+
+
+    if (!email || !senha) {
+
+        erro.textContent =
+            "Digite seu e-mail e sua senha.";
+
+        return;
+
+    }
+
+
+    const { error } =
+        await supabaseClient.auth
+            .signInWithPassword({
+                email: email,
+                password: senha
+            });
+
+
+    if (error) {
+
+        console.error(error);
+
+        erro.textContent =
+            "E-mail ou senha incorretos.";
+
+        return;
+
+    }
+
+
+    iniciarPainel();
+
+}
+
+
+async function verificarLogin() {
+
+    const { data } =
+        await supabaseClient.auth.getSession();
+
+
+    if (
+        data &&
+        data.session
+    ) {
+
+        iniciarPainel();
+
+    }
+
+}
+
+
+async function sairAdmin() {
+
+    await supabaseClient.auth.signOut();
+
+    location.reload();
+
+}
+
+
+// ==========================================
+// INICIAR PAINEL
+// ==========================================
+
+async function iniciarPainel() {
+
+    document.getElementById(
+        "loginAdmin"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "painelAdmin"
+    ).style.display = "block";
+
+
+    document.getElementById(
+        "botaoNovoPedido"
+    ).style.display = "block";
+
+
+    await carregarPedidos();
+
+}
+
+
+// ==========================================
+// NAVEGAÇÃO
+// ==========================================
+
+function esconderAreas() {
+
+    document
+        .querySelectorAll(".area")
+        .forEach(function(area) {
+
+            area.classList.remove("ativa");
+
+        });
+
+
+    document.getElementById(
+        "painelAdmin"
+    ).style.display = "none";
+
+}
+
+
+function voltarPainel() {
+
+    esconderAreas();
+
+    document.getElementById(
+        "painelAdmin"
+    ).style.display = "block";
+
+    carregarPedidos();
+
+}
+
+
+async function abrirArea(nome) {
+
+    esconderAreas();
+
+    const area =
+        document.getElementById(
+            "area-" + nome
+        );
+
+    area.classList.add("ativa");
+
+
+    if (nome === "pedidos") {
+        await carregarPedidos();
+        mostrarTodosPedidos();
+    }
+
+    if (nome === "produtos") {
+        await carregarProdutosAdmin();
+    }
+
+    if (nome === "financeiro") {
+        await carregarPedidos();
+        atualizarFinanceiro();
+    }
+
+    if (nome === "relatorios") {
+        prepararDatasRelatorio();
+    }
+
+    if (nome === "promocoes") {
+        await carregarCupons();
+    }
+
+    if (nome === "configuracoes") {
+        await carregarConfiguracoes();
+    }
+
+}
+
+
+// ==========================================
+// PEDIDOS
+// ==========================================
+
+async function carregarPedidos() {
+
+    const { data, error } =
+        await supabaseClient
+            .from("Pedidos")
+            .select("*")
+            .order(
+                "created_at",
+                { ascending: false }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    pedidos =
+        data || [];
+
+
+    atualizarResumo();
+
+    mostrarPedidosRecentes();
+
+
+    if (
+        document.getElementById(
+            "area-pedidos"
+        ).classList.contains("ativa")
+    ) {
+
+        mostrarTodosPedidos();
+
+    }
+
+}
+
+
+function pedidosHoje() {
+
+    const agora =
+        new Date();
+
+
+    return pedidos.filter(
+        function(pedido) {
+
+            const data =
+                new Date(
+                    pedido.created_at
+                );
+
+
+            return (
+                data.getDate() ===
+                    agora.getDate() &&
+                data.getMonth() ===
+                    agora.getMonth() &&
+                data.getFullYear() ===
+                    agora.getFullYear()
+            );
+
+        }
     );
 
-    const custos = pedidos.reduce(
-        (total, pedido) => total + pedido.custo,
-        0
-    );
+}
 
-    const lucro = vendas - custos;
 
-    document.getElementById("totalPedidos").textContent =
-        quantidade;
+function atualizarResumo() {
 
-    document.getElementById("totalVendas").textContent =
+    const hoje =
+        pedidosHoje();
+
+
+    const vendas =
+        hoje.reduce(
+            (soma, pedido) =>
+                soma +
+                numero(
+                    pedido.valor_total
+                ),
+            0
+        );
+
+
+    const custos =
+        hoje.reduce(
+            (soma, pedido) =>
+                soma +
+                numero(
+                    pedido.custo
+                ),
+            0
+        );
+
+
+    document.getElementById(
+        "resumoPedidos"
+    ).textContent =
+        hoje.length;
+
+
+    document.getElementById(
+        "resumoVendas"
+    ).textContent =
         dinheiro(vendas);
 
-    document.getElementById("totalCustos").textContent =
+
+    document.getElementById(
+        "resumoCustos"
+    ).textContent =
         dinheiro(custos);
 
-    document.getElementById("lucro").textContent =
-        dinheiro(lucro);
 
-    mostrarPedidos();
+    document.getElementById(
+        "resumoLucro"
+    ).textContent =
+        dinheiro(
+            vendas - custos
+        );
+
 }
 
-function mostrarPedidos() {
 
-    const lista = document.getElementById("listaPedidos");
+function pedidoHTML(pedido) {
 
-    if (pedidos.length === 0) {
-        lista.innerHTML =
-            '<div class="pedido"><p class="vazio">Nenhum pedido registrado ainda.</p></div>';
+    const data =
+        new Date(
+            pedido.created_at
+        );
 
-        return;
-    }
 
-    lista.innerHTML = "";
+    const status =
+        pedido.status ||
+        "Novo";
 
-    [...pedidos].reverse().forEach(pedido => {
 
-        lista.innerHTML += `
+    return `
+
         <div class="pedido">
 
             <div class="pedido-topo">
 
                 <strong>
-                    Pedido #${String(pedido.numero).padStart(4,"0")}
+                    Pedido #${pedido.id}
+                    • ${esc(pedido.cliente || "")}
                 </strong>
 
                 <span class="status">
-                    ${pedido.status}
+                    ${esc(status)}
                 </span>
 
             </div>
 
             <p>
-                <strong>Cliente:</strong>
-                ${pedido.cliente}
+                <strong>Data:</strong>
+                ${data.toLocaleString("pt-BR")}
+            </p>
+
+            <p>
+                <strong>Telefone:</strong>
+                ${esc(pedido.telefone || "")}
+            </p>
+
+            <p style="white-space:pre-line;">
+                <strong>Itens:</strong><br>
+                ${esc(pedido.itens || "")}
             </p>
 
             <p>
                 <strong>Total:</strong>
-                ${dinheiro(pedido.valor)}
+                ${dinheiro(pedido.valor_total)}
             </p>
 
             <p>
-                <strong>Lucro estimado:</strong>
-                ${dinheiro(pedido.valor - pedido.custo)}
+                <strong>Pagamento:</strong>
+                ${esc(pedido.forma_pagamento || "")}
             </p>
 
+            <p>
+                <strong>Endereço:</strong>
+                ${esc(pedido.endereco || "")}
+            </p>
+
+            ${
+                pedido.observacoes
+                ?
+                `
+                <p>
+                    <strong>Observação:</strong>
+                    ${esc(pedido.observacoes)}
+                </p>
+                `
+                :
+                ""
+            }
+
+            <label>Status</label>
+
+            <select
+                onchange="alterarStatus(${pedido.id}, this.value)"
+            >
+
+                ${[
+                    "Novo",
+                    "Em preparo",
+                    "Saiu para entrega",
+                    "Concluído",
+                    "Cancelado"
+                ].map(
+                    function(opcao) {
+
+                        return `
+                            <option
+                                value="${opcao}"
+                                ${
+                                    status === opcao
+                                    ?
+                                    "selected"
+                                    :
+                                    ""
+                                }
+                            >
+                                ${opcao}
+                            </option>
+                        `;
+
+                    }
+                ).join("")}
+
+            </select>
+
         </div>
-        `;
-    });
+
+    `;
+
 }
+
+
+function mostrarPedidosRecentes() {
+
+    const lista =
+        document.getElementById(
+            "listaPedidosRecentes"
+        );
+
+
+    if (!pedidos.length) {
+
+        lista.innerHTML =
+            '<p class="vazio">' +
+            'Nenhum pedido registrado ainda.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    lista.innerHTML =
+        pedidos
+            .slice(0, 5)
+            .map(pedidoHTML)
+            .join("");
+
+}
+
+
+function mostrarTodosPedidos() {
+
+    const lista =
+        document.getElementById(
+            "listaTodosPedidos"
+        );
+
+
+    if (!pedidos.length) {
+
+        lista.innerHTML =
+            '<p class="vazio">' +
+            'Nenhum pedido registrado ainda.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    lista.innerHTML =
+        pedidos
+            .map(pedidoHTML)
+            .join("");
+
+}
+
+
+async function alterarStatus(
+    id,
+    novoStatus
+) {
+
+    const { error } =
+        await supabaseClient
+            .from("Pedidos")
+            .update({
+                status: novoStatus
+            })
+            .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível alterar o status."
+        );
+
+        return;
+
+    }
+
+
+    await carregarPedidos();
+
+}
+
+
+// ==========================================
+// NOVO PEDIDO MANUAL
+// ==========================================
+
+async function novoPedido() {
+
+    const cliente =
+        prompt(
+            "Nome do cliente:"
+        );
+
+
+    if (!cliente) {
+        return;
+    }
+
+
+    const telefone =
+        prompt(
+            "Telefone do cliente:"
+        ) || "";
+
+
+    const itens =
+        prompt(
+            "Descreva o pedido:"
+        );
+
+
+    if (!itens) {
+        return;
+    }
+
+
+    const valorTexto =
+        prompt(
+            "Valor total do pedido:"
+        );
+
+
+    if (!valorTexto) {
+        return;
+    }
+
+
+    const valor =
+        Number(
+            valorTexto
+                .replace(",", ".")
+        );
+
+
+    if (
+        !Number.isFinite(valor)
+    ) {
+
+        alert(
+            "Valor inválido."
+        );
+
+        return;
+
+    }
+
+
+    const pagamento =
+        prompt(
+            "Forma de pagamento:",
+            "Pix"
+        ) || "Pix";
+
+
+    const endereco =
+        prompt(
+            "Endereço:"
+        ) || "";
+
+
+    const { error } =
+        await supabaseClient.rpc(
+            "criar_pedido",
+            {
+                p_cliente: cliente,
+                p_telefone: telefone,
+                p_itens: itens,
+                p_valor_total: valor,
+                p_custo: 0,
+                p_forma_pagamento:
+                    pagamento,
+                p_endereco:
+                    endereco,
+                p_taxa_entrega: 0,
+                p_observacoes: null
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível registrar o pedido."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Pedido registrado! 💜"
+    );
+
+
+    await carregarPedidos();
+
+}
+
+
+// ==========================================
+// PRODUTOS
+// ==========================================
+
+async function carregarProdutosAdmin() {
+
+    const [rp, rt, ra] =
+        await Promise.all([
+
+            supabaseClient
+                .from("Produtos")
+                .select("*")
+                .order(
+                    "ordem",
+                    { ascending: true }
+                ),
+
+            supabaseClient
+                .from("Tamanhos")
+                .select("*")
+                .order(
+                    "ordem",
+                    { ascending: true }
+                ),
+
+            supabaseClient
+                .from("Adicionais")
+                .select("*")
+                .order(
+                    "ordem",
+                    { ascending: true }
+                )
+
+        ]);
+
+
+    if (
+        rp.error ||
+        rt.error ||
+        ra.error
+    ) {
+
+        console.error(
+            rp.error,
+            rt.error,
+            ra.error
+        );
+
+        alert(
+            "Não foi possível carregar os produtos."
+        );
+
+        return;
+
+    }
+
+
+    produtosAdmin =
+        rp.data || [];
+
+    tamanhosAdmin =
+        rt.data || [];
+
+    adicionaisAdmin =
+        ra.data || [];
+
+
+    mostrarProdutosAdmin();
+
+    mostrarAdicionaisAdmin();
+
+}
+
+
+function mostrarProdutosAdmin() {
+
+    const lista =
+        document.getElementById(
+            "listaProdutosAdmin"
+        );
+
+
+    if (!produtosAdmin.length) {
+
+        lista.innerHTML =
+            '<p class="vazio">' +
+            'Nenhum produto cadastrado.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    lista.innerHTML = "";
+
+
+    produtosAdmin.forEach(
+        function(produto) {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "item-admin";
+
+
+            const tamanhosProduto =
+                tamanhosAdmin.filter(
+                    t =>
+                        Number(t.produto_id) ===
+                        Number(produto.id)
+                );
+
+
+            card.innerHTML = `
+
+                <div class="item-topo">
+
+                    <strong>
+                        ${esc(produto.nome)}
+                    </strong>
+
+                    <span class="status">
+                        ${
+                            produto.ativo
+                            ?
+                            "Ativo"
+                            :
+                            "Inativo"
+                        }
+                    </span>
+
+                </div>
+
+                <label>Nome</label>
+
+                <input
+                    id="produto-nome-${produto.id}"
+                    value="${esc(produto.nome)}"
+                >
+
+                <label>Descrição</label>
+
+                <textarea
+                    id="produto-desc-${produto.id}"
+                >${esc(produto.descricao || "")}</textarea>
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        id="produto-ativo-${produto.id}"
+                        ${
+                            produto.ativo
+                            ?
+                            "checked"
+                            :
+                            ""
+                        }
+                    >
+
+                    Produto ativo no site
+
+                </label>
+
+                <br><br>
+
+                <button
+                    class="botao botao-pequeno"
+                    onclick="salvarProduto(${produto.id})"
+                >
+                    Salvar produto
+                </button>
+
+                <button
+                    class="botao botao-perigo botao-pequeno"
+                    onclick="excluirProduto(${produto.id})"
+                >
+                    Excluir
+                </button>
+
+                <hr>
+
+                <h3>Tamanhos e preços</h3>
+
+                <div id="tamanhos-${produto.id}">
+
+                    ${
+                        tamanhosProduto.length
+                        ?
+                        tamanhosProduto.map(
+                            tamanhoHTML
+                        ).join("")
+                        :
+                        '<p class="vazio">Nenhum tamanho.</p>'
+                    }
+
+                </div>
+
+                <button
+                    class="botao botao-secundario botao-pequeno"
+                    onclick="adicionarTamanho(${produto.id})"
+                >
+                    + Novo tamanho
+                </button>
+
+            `;
+
+
+            lista.appendChild(card);
+
+        }
+    );
+
+}
+
+
+function tamanhoHTML(tamanho) {
+
+    return `
+
+        <div class="tamanho-linha">
+
+            <input
+                id="tam-nome-${tamanho.id}"
+                value="${esc(tamanho.tamanho)}"
+                placeholder="Tamanho"
+            >
+
+            <input
+                id="tam-preco-${tamanho.id}"
+                type="number"
+                step="0.01"
+                value="${numero(tamanho.preco)}"
+                placeholder="Preço"
+            >
+
+            <input
+                id="tam-custo-${tamanho.id}"
+                type="number"
+                step="0.01"
+                value="${numero(tamanho.custo)}"
+                placeholder="Custo"
+            >
+
+            <div>
+
+                <label>
+                    <input
+                        type="checkbox"
+                        id="tam-ativo-${tamanho.id}"
+                        ${
+                            tamanho.ativo
+                            ?
+                            "checked"
+                            :
+                            ""
+                        }
+                    >
+                    Ativo
+                </label>
+
+                <br>
+
+                <button
+                    class="botao botao-pequeno"
+                    onclick="salvarTamanho(${tamanho.id})"
+                >
+                    Salvar
+                </button>
+
+                <button
+                    class="botao botao-perigo botao-pequeno"
+                    onclick="excluirTamanho(${tamanho.id})"
+                >
+                    Excluir
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+async function adicionarProduto() {
+
+    const nome =
+        document.getElementById(
+            "novoProdutoNome"
+        ).value.trim();
+
+
+    const descricao =
+        document.getElementById(
+            "novoProdutoDescricao"
+        ).value.trim();
+
+
+    if (!nome) {
+
+        alert(
+            "Digite o nome do produto."
+        );
+
+        return;
+
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("Produtos")
+            .insert({
+                nome: nome,
+                descricao: descricao,
+                ativo: true,
+                ordem:
+                    produtosAdmin.length + 1
+            });
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível adicionar."
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "novoProdutoNome"
+    ).value = "";
+
+
+    document.getElementById(
+        "novoProdutoDescricao"
+    ).value = "";
+
+
+    await carregarProdutosAdmin();
+
+}
+
+
+async function salvarProduto(id) {
+
+    const nome =
+        document.getElementById(
+            "produto-nome-" + id
+        ).value.trim();
+
+
+    const descricao =
+        document.getElementById(
+            "produto-desc-" + id
+        ).value.trim();
+
+
+    const ativo =
+        document.getElementById(
+            "produto-ativo-" + id
+        ).checked;
+
+
+    const { error } =
+        await supabaseClient
+            .from("Produtos")
+            .update({
+                nome: nome,
+                descricao: descricao,
+                ativo: ativo
+            })
+            .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert("Erro ao salvar.");
+
+        return;
+
+    }
+
+
+    alert("Produto salvo! 💜");
+
+    await carregarProdutosAdmin();
+
+}
+
+
+async function excluirProduto(id) {
+
+    if (
+        !confirm(
+            "Tem certeza que deseja excluir este produto?"
+        )
+    ) {
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("Produtos")
+            .delete()
+            .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível excluir."
+        );
+
+        return;
+
+    }
+
+
+    await carregarProdutosAdmin();
+
+}
+
+
+async function adicionarTamanho(
+    produtoId
+) {
+
+    const nome =
+        prompt(
+            "Nome do tamanho. Ex.: 300ml"
+        );
+
+
+    if (!nome) {
+        return;
+    }
+
+
+    const precoTexto =
+        prompt(
+            "Preço de venda:"
+        );
+
+
+    if (!precoTexto) {
+        return;
+    }
+
+
+    const custoTexto =
+        prompt(
+            "Custo desse tamanho:",
+            "0"
+        );
+
+
+    const preco =
+        Number(
+            precoTexto.replace(",", ".")
+        );
+
+
+    const custo =
+        Number(
+            String(
+                custoTexto || "0"
+            ).replace(",", ".")
+        );
+
+
+    const { error } =
+        await supabaseClient
+            .from("Tamanhos")
+            .insert({
+                produto_id: produtoId,
+                tamanho: nome,
+                preco: preco,
+                custo: custo,
+                ativo: true,
+                ordem: 99
+            });
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível adicionar o tamanho."
+        );
+
+        return;
+
+    }
+
+
+    await carregarProdutosAdmin();
+
+}
+
+
+async function salvarTamanho(id) {
+
+    const tamanho =
+        document.getElementById(
+            "tam-nome-" + id
+        ).value.trim();
+
+
+    const preco =
+        Number(
+            document.getElementById(
+                "tam-preco-" + id
+            ).value
+        );
+
+
+    const custo =
+        Number(
+            document.getElementById(
+                "tam-custo-" + id
+            ).value || 0
+        );
+
+
+    const ativo =
+        document.getElementById(
+            "tam-ativo-" + id
+        ).checked;
+
+
+    const { error } =
+        await supabaseClient
+            .from("Tamanhos")
+            .update({
+                tamanho: tamanho,
+                preco: preco,
+                custo: custo,
+                ativo: ativo
+            })
+            .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível salvar."
+        );
+
+        return;
+
+    }
+
+
+    alert("Tamanho salvo! 💜");
+
+    await carregarProdutosAdmin();
+
+}
+
+
+async function excluirTamanho(id) {
+
+    if (
+        !confirm(
+            "Excluir este tamanho?"
+        )
+    ) {
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("Tamanhos")
+            .delete()
+            .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível excluir."
+        );
+
+        return;
+
+    }
+
+
+    await carregarProdutosAdmin();
+
+}
+
+
+// ==========================================
+// ADICIONAIS
+// ==========================================
+
+function mostrarAdicionaisAdmin() {
+
+    const lista =
+        document.getElementById(
+            "listaAdicionaisAdmin"
+        );
+
+
+    if (!adicionaisAdmin.length) {
+
+        lista.innerHTML =
+            '<p class="vazio">' +
+            'Nenhum adicional cadastrado.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    lista.innerHTML =
+        adicionaisAdmin
+            .map(
+                function(adicional) {
+
+                    return `
+
+                        <div class="adicional-linha">
+
+                            <input
+                                id="add-nome-${adicional.id}"
+                                value="${esc(adicional.nome)}"
+                            >
+
+                            <input
+                                id="add-preco-${adicional.id}"
+                                type="number"
+                                step="0.01"
+                                value="${numero(adicional.preco)}"
+                            >
+
+                            <input
+                                id="add-custo-${adicional.id}"
+                                type="number"
+                                step="0.01"
+                                value="${numero(adicional.custo)}"
+                            >
+
+                            <div>
+
+                                <label>
+
+                                    <input
+                                        id="add-ativo-${adicional.id}"
+                                        type="checkbox"
+                                        ${
+                                            adicional.ativo
+                                            ?
+                                            "checked"
+                                            :
+                                            ""
+                                        }
+                                    >
+
+                                    Ativo
+
+                                </label>
+
+                                <br>
+
+                                <button
+                                    class="botao botao-pequeno"
+                                    onclick="salvarAdicional(${adicional.id})"
+                                >
+                                    Salvar
+                                </button>
+
+                                <button
+                                    class="botao botao-perigo botao-pequeno"
+                                    onclick="excluirAdicional(${adicional.id})"
+                                >
+                                    Excluir
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+}
+
+
+async function adicionarAdicional() {
+
+    const nome =
+        document.getElementById(
+            "novoAdicionalNome"
+        ).value.trim();
+
+
+    const preco =
+        Number(
+            document.getElementById(
+                "novoAdicionalPreco"
+            ).value
+        );
+
+
+    const custo =
+        Number(
+            document.getElementById(
+                "novoAdicionalCusto"
+            ).value || 0
+        );
+
+
+    if (!nome) {
+
+        alert(
+            "Digite o nome do adicional."
+        );
+
+        return;
+
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("Adicionais")
+            .insert({
+                nome: nome,
+                preco: preco,
+                custo: custo,
+                ativo: true,
+                ordem:
+                    adicionaisAdmin.length + 1
+            });
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível adicionar."
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "novoAdicionalNome"
+    ).value = "";
+
+    document.getElementById(
+        "novoAdicionalPreco"
+    ).value = "";
+
+    document.getElementById(
+        "novoAdicionalCusto"
+    ).value = "";
+
+
+    await carregarProdutosAdmin();
+
+}
+
+
+async function salvarAdicional(id) {
+
+    const nome =
+        document.getElementById(
+            "add-nome-" + id
+        ).value.trim();
+
+
+    const preco =
+        Number(
+            document.getElementById(
+                "add-preco-" + id
+            ).value
+        );
+
+
+    const custo =
+        Number(
+            document.getElementById(
+                "add-custo-" + id
+            ).value || 0
+        );
+
+
+    const ativo =
+        document.getElementById(
+            "add-ativo-" + id
+        ).checked;
+
+
+    const { error } =
+        await supabaseClient
+            .from("Adicionais")
+            .update({
+                nome: nome,
+                preco: preco,
+                custo: custo,
+                ativo: ativo
+            })
+            .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert("Erro ao salvar.");
+
+        return;
+
+    }
+
+
+    alert("Adicional salvo! 💜");
+
+    await carregarProdutosAdmin();
+
+}
+
+
+async function excluirAdicional(id) {
+
+    if (
+        !confirm(
+            "Excluir este adicional?"
+        )
+    ) {
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("Adicionais")
+            .delete()
+            .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível excluir."
+        );
+
+        return;
+
+    }
+
+
+    await carregarProdutosAdmin();
+
+}
+
+
+// ==========================================
+// FINANCEIRO
+// ==========================================
+
+function atualizarFinanceiro() {
+
+    const vendas =
+        pedidos.reduce(
+            (s, p) =>
+                s +
+                numero(p.valor_total),
+            0
+        );
+
+
+    const custos =
+        pedidos.reduce(
+            (s, p) =>
+                s +
+                numero(p.custo),
+            0
+        );
+
+
+    document.getElementById(
+        "financeiroVendas"
+    ).textContent =
+        dinheiro(vendas);
+
+
+    document.getElementById(
+        "financeiroCustos"
+    ).textContent =
+        dinheiro(custos);
+
+
+    document.getElementById(
+        "financeiroLucro"
+    ).textContent =
+        dinheiro(
+            vendas - custos
+        );
+
+
+    document.getElementById(
+        "financeiroPedidos"
+    ).textContent =
+        pedidos.length;
+
+}
+
+
+// ==========================================
+// RELATÓRIOS
+// ==========================================
+
+function prepararDatasRelatorio() {
+
+    const hoje =
+        new Date();
+
+
+    const primeiroDia =
+        new Date(
+            hoje.getFullYear(),
+            hoje.getMonth(),
+            1
+        );
+
+
+    document.getElementById(
+        "relatorioInicio"
+    ).value =
+        dataInput(primeiroDia);
+
+
+    document.getElementById(
+        "relatorioFim"
+    ).value =
+        dataInput(hoje);
+
+
+    gerarRelatorio();
+
+}
+
+
+function dataInput(data) {
+
+    const ano =
+        data.getFullYear();
+
+    const mes =
+        String(
+            data.getMonth() + 1
+        ).padStart(2, "0");
+
+    const dia =
+        String(
+            data.getDate()
+        ).padStart(2, "0");
+
+
+    return `${ano}-${mes}-${dia}`;
+
+}
+
+
+async function gerarRelatorio() {
+
+    await carregarPedidos();
+
+
+    const inicio =
+        document.getElementById(
+            "relatorioInicio"
+        ).value;
+
+
+    const fim =
+        document.getElementById(
+            "relatorioFim"
+        ).value;
+
+
+    if (!inicio || !fim) {
+        return;
+    }
+
+
+    const dataInicio =
+        new Date(
+            inicio + "T00:00:00"
+        );
+
+
+    const dataFim =
+        new Date(
+            fim + "T23:59:59"
+        );
+
+
+    const filtrados =
+        pedidos.filter(
+            function(pedido) {
+
+                const data =
+                    new Date(
+                        pedido.created_at
+                    );
+
+
+                return (
+                    data >= dataInicio &&
+                    data <= dataFim
+                );
+
+            }
+        );
+
+
+    const vendas =
+        filtrados.reduce(
+            (s, p) =>
+                s +
+                numero(p.valor_total),
+            0
+        );
+
+
+    const custos =
+        filtrados.reduce(
+            (s, p) =>
+                s +
+                numero(p.custo),
+            0
+        );
+
+
+    const lucro =
+        vendas - custos;
+
+
+    const ticket =
+        filtrados.length
+            ?
+            vendas /
+            filtrados.length
+            :
+            0;
+
+
+    document.getElementById(
+        "relPedidos"
+    ).textContent =
+        filtrados.length;
+
+
+    document.getElementById(
+        "relVendas"
+    ).textContent =
+        dinheiro(vendas);
+
+
+    document.getElementById(
+        "relCustos"
+    ).textContent =
+        dinheiro(custos);
+
+
+    document.getElementById(
+        "relLucro"
+    ).textContent =
+        dinheiro(lucro);
+
+
+    document.getElementById(
+        "relTicket"
+    ).textContent =
+        dinheiro(ticket);
+
+}
+
+
+// ==========================================
+// CUPONS
+// ==========================================
+
+async function salvarCupom() {
+
+    const codigo =
+        document.getElementById(
+            "cupomCodigo"
+        ).value
+            .trim()
+            .toUpperCase();
+
+
+    const tipo =
+        document.getElementById(
+            "cupomTipo"
+        ).value;
+
+
+    const valor =
+        Number(
+            document.getElementById(
+                "cupomValor"
+            ).value
+        );
+
+
+    const pedidoMinimo =
+        Number(
+            document.getElementById(
+                "cupomMinimo"
+            ).value || 0
+        );
+
+
+    const validade =
+        document.getElementById(
+            "cupomValidade"
+        ).value;
+
+
+    const limite =
+        document.getElementById(
+            "cupomLimite"
+        ).value;
+
+
+    if (
+        !codigo ||
+        !valor ||
+        valor <= 0
+    ) {
+
+        alert(
+            "Preencha o código e o valor."
+        );
+
+        return;
+
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("Cupons")
+            .insert({
+                codigo: codigo,
+                tipo: tipo,
+                valor: valor,
+                ativo: true,
+                pedido_minimo:
+                    pedidoMinimo,
+                validade:
+                    validade || null,
+                limite_usos:
+                    limite
+                    ?
+                    Number(limite)
+                    :
+                    null,
+                usos: 0
+            });
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível criar o cupom."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Cupom criado! 🎁"
+    );
+
+
+    document.getElementById(
+        "cupomCodigo"
+    ).value = "";
+
+    document.getElementById(
+        "cupomValor"
+    ).value = "";
+
+    document.getElementById(
+        "cupomMinimo"
+    ).value = "";
+
+    document.getElementById(
+        "cupomValidade"
+    ).value = "";
+
+    document.getElementById(
+        "cupomLimite"
+    ).value = "";
+
+
+    await carregarCupons();
+
+}
+
+
+async function carregarCupons() {
+
+    const lista =
+        document.getElementById(
+            "listaCupons"
+        );
+
+
+    const { data, error } =
+        await supabaseClient
+            .from("Cupons")
+            .select("*")
+            .order(
+                "created_at",
+                { ascending: false }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        lista.innerHTML =
+            '<p class="vazio">' +
+            'Erro ao carregar cupons.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    if (!data || !data.length) {
+
+        lista.innerHTML =
+            '<p class="vazio">' +
+            'Nenhum cupom cadastrado.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    lista.innerHTML =
+        data.map(
+            function(cupom) {
+
+                const desconto =
+                    cupom.tipo ===
+                    "percentual"
+                    ?
+                    numero(cupom.valor) +
+                    "%"
+                    :
+                    dinheiro(cupom.valor);
+
+
+                return `
+
+                    <div class="pedido">
+
+                        <div class="pedido-topo">
+
+                            <strong>
+                                ${esc(cupom.codigo)}
+                            </strong>
+
+                            <span class="status">
+                                ${
+                                    cupom.ativo
+                                    ?
+                                    "Ativo"
+                                    :
+                                    "Inativo"
+                                }
+                            </span>
+
+                        </div>
+
+                        <p>
+                            <strong>Desconto:</strong>
+                            ${desconto}
+                        </p>
+
+                        <p>
+                            <strong>Pedido mínimo:</strong>
+                            ${dinheiro(cupom.pedido_minimo)}
+                        </p>
+
+                        <p>
+                            <strong>Usos:</strong>
+                            ${numero(cupom.usos)}
+                            ${
+                                cupom.limite_usos
+                                ?
+                                " / " +
+                                cupom.limite_usos
+                                :
+                                ""
+                            }
+                        </p>
+
+                        <button
+                            class="botao botao-pequeno"
+                            onclick="alternarCupom(
+                                ${cupom.id},
+                                ${!cupom.ativo}
+                            )"
+                        >
+                            ${
+                                cupom.ativo
+                                ?
+                                "Desativar"
+                                :
+                                "Ativar"
+                            }
+                        </button>
+
+                        <button
+                            class="botao botao-perigo botao-pequeno"
+                            onclick="excluirCupom(${cupom.id})"
+                        >
+                            Excluir
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+async function alternarCupom(
+    id,
+    ativo
+) {
+
+    const { error } =
+        await supabaseClient
+            .from("Cupons")
+            .update({
+                ativo: ativo
+            })
+            .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível alterar o cupom."
+        );
+
+        return;
+
+    }
+
+
+    await carregarCupons();
+
+}
+
+
+async function excluirCupom(id) {
+
+    if (
+        !confirm(
+            "Excluir este cupom?"
+        )
+    ) {
+        return;
+    }
+
+
+    const { error } =
+        await supabaseClient
+            .from("Cupons")
+            .delete()
+            .eq("id", id);
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível excluir."
+        );
+
+        return;
+
+    }
+
+
+    await carregarCupons();
+
+}
+
+
+// ==========================================
+// CONFIGURAÇÕES
+// ==========================================
+
+async function carregarConfiguracoes() {
+
+    const { data, error } =
+        await supabaseClient
+            .from("Configuracoes")
+            .select("*")
+            .limit(1)
+            .maybeSingle();
+
+
+    if (error) {
+
+        console.error(error);
+
+        alert(
+            "Não foi possível carregar as configurações."
+        );
+
+        return;
+
+    }
+
+
+    if (!data) {
+        return;
+    }
+
+
+    configuracaoId =
+        data.id;
+
+
+    document.getElementById(
+        "configNomeLoja"
+    ).value =
+        data.nome_loja || "";
+
+
+    document.getElementById(
+        "configWhatsapp"
+    ).value =
+        data.whatsapp || "";
+
+
+    document.getElementById(
+        "configTaxaEntrega"
+    ).value =
+        numero(
+            data.taxa_entrega
+        );
+
+
+    document.getElementById(
+        "configLojaAberta"
+    ).checked =
+        data.loja_aberta !== false;
+
+
+    document.getElementById(
+        "configMensagemFechado"
+    ).value =
+        data.mensagem_fechado || "";
+
+}
+
+
+async function salvarConfiguracoes() {
+
+    if (!configuracaoId) {
+
+        alert(
+            "Configuração não encontrada."
+        );
+
+        return;
+
+    }
+
+
+    const nome =
+        document.getElementById(
+            "configNomeLoja"
+        ).value.trim();
+
+
+    const whatsapp =
+        document.getElementById(
+            "configWhatsapp"
+        ).value
+            .replace(/\D/g, "");
+
+
+    const taxa =
+        Number(
+            document.getElementById(
+                "configTaxaEntrega"
+            ).value || 0
+        );
+
+
+    const aberta =
+        document.getElementById(
+            "configLojaAberta"
+        ).checked;
+
+
+    const mensagem =
+        document.getElementById(
+            "configMensagemFechado"
+        ).value.trim();
+
+
+    const { error } =
+        await supabaseClient
+            .from("Configuracoes")
+            .update({
+                nome_loja: nome,
+                whatsapp: whatsapp,
+                taxa_entrega: taxa,
+                loja_aberta: aberta,
+                mensagem_fechado:
+                    mensagem,
+                atualizado_em:
+                    new Date()
+                        .toISOString()
+            })
+            .eq(
+                "id",
+                configuracaoId
+            );
+
+
+    const resposta =
+        document.getElementById(
+            "configMensagem"
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        resposta.className =
+            "erro";
+
+        resposta.textContent =
+            "Não foi possível salvar.";
+
+        return;
+
+    }
+
+
+    resposta.className =
+        "sucesso";
+
+    resposta.textContent =
+        "Configurações salvas! 💜";
+
+}
+
+
+// ==========================================
+// ATUALIZAÇÃO AUTOMÁTICA DOS PEDIDOS
+// ==========================================
+
+setInterval(
+    function() {
+
+        const painel =
+            document.getElementById(
+                "painelAdmin"
+            );
+
+
+        if (
+            painel.style.display !==
+            "none"
+        ) {
+
+            carregarPedidos();
+
+        }
+
+    },
+    30000
+);
+
+
+// ==========================================
+// COMEÇAR
+// ==========================================
+
+verificarLogin();
 
 </script>
 
