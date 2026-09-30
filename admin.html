@@ -633,7 +633,11 @@ h2, h3 {
             <span>Pedidos</span>
             <strong id="relPedidos">0</strong>
         </div>
-
+        
+<div class="card">
+    <span>Cancelados</span>
+    <strong id="relCancelados">0</strong>
+</div>
         <div class="card">
             <span>Vendas</span>
             <strong id="relVendas">R$ 0,00</strong>
@@ -2534,9 +2538,17 @@ async function gerarRelatorio() {
             }
         );
 
+    const validos = filtrados.filter(
+    p => (p.status || "").toLowerCase() !== "cancelado"
+);
 
-    const vendas =
-        filtrados.reduce(
+const cancelados = filtrados.filter(
+    p => (p.status || "").toLowerCase() === "cancelado"
+);
+
+
+ const custos =
+    validos.reduce(
             (s, p) =>
                 s +
                 numero(p.valor_total),
@@ -2558,10 +2570,10 @@ async function gerarRelatorio() {
 
 
     const ticket =
-        filtrados.length
+        validos.length
             ?
             vendas /
-            filtrados.length
+           validos.length
             :
             0;
 
@@ -2569,7 +2581,12 @@ async function gerarRelatorio() {
     document.getElementById(
         "relPedidos"
     ).textContent =
-        filtrados.length;
+        validos.length
+
+    document.getElementById(
+    "relCancelados"
+).textContent =
+    cancelados.length;
 
 
     document.getElementById(
