@@ -533,7 +533,7 @@ document
     .getElementById("finalizar")
     .addEventListener(
         "click",
-        function() {
+    async function() {
 
 
             // VERIFICAR CARRINHO
@@ -624,7 +624,22 @@ document
 
 
             // MONTAR MENSAGEM
+const itensPedido = carrinho.map(function(item) {
 
+    let texto = item.nome + " - " + item.tamanho;
+
+    if (item.adicionais.length > 0) {
+        texto += " + " + item.adicionais
+            .map(function(adicional) {
+                return adicional.nome;
+            })
+            .join(", ");
+    }
+
+        return texto;
+
+         }).join(" | ");
+        
             let mensagem =
                 "💜 *NOVO PEDIDO - KE AÇAÍ* 💜\n\n";
 
@@ -797,7 +812,37 @@ mensagem +=
             mensagem +=
                 "\n🛵 *PEDIDO PARA ENTREGA*";
 
+const enderecoCompleto =
+    rua + ", " + numero +
+    " - " + bairro +
+    (complemento ? " - " + complemento : "");
 
+const totalFinal =
+    Math.max(0, total - valorDesconto);
+
+const { error: erroPedido } = await supabaseClient
+    .from("Pedidos")
+    .insert({
+        cliente: nome,
+        telefone: telefone,
+        itens: itensPedido,
+        valor_total: totalFinal,
+        forma_pagamento: formaPagamento,
+        status: "Novo",
+        endereco: enderecoCompleto,
+        taxa_entrega: 0,
+        observacoes: observacao || null
+    });
+
+if (erroPedido) {
+    console.error(erroPedido);
+
+    alert(
+        "Não foi possível registrar o pedido. Tente novamente."
+    );
+
+    return;
+}
             // WHATSAPP
 
             const texto =
