@@ -1081,6 +1081,7 @@ function pedidosHoje() {
 
 
             return (
+                (pedido.status || "").toLowerCase() !== "cancelado" &&
                 data.getDate() ===
                     agora.getDate() &&
                 data.getMonth() ===
