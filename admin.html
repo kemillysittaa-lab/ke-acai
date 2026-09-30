@@ -216,8 +216,8 @@ h2 {
             📊 Relatórios
         </button>
 
-        <button class="botao">
-            🎁 Promoções
+       <button class="botao" onclick="abrirPromocoes()">
+           🎁 Promoções
         </button>
 
         <button class="botao">
@@ -240,6 +240,41 @@ h2 {
 
 </div>
 
+    <div id="areaPromocoes" class="container" style="display: none;">
+
+    <h2>🎁 Cupons e promoções</h2>
+
+    <div class="card">
+        <h2>Novo cupom</h2>
+
+        <input type="text" id="cupomCodigo" placeholder="Código: BEMVINDO10">
+
+        <select id="cupomTipo">
+            <option value="percentual">Desconto em %</option>
+            <option value="fixo">Desconto em R$</option>
+        </select>
+
+        <input type="number" id="cupomValor" placeholder="Valor do desconto">
+
+        <input type="number" id="cupomMinimo" placeholder="Pedido mínimo">
+
+        <input type="datetime-local" id="cupomValidade">
+
+        <input type="number" id="cupomLimite" placeholder="Limite de usos">
+
+        <button class="botao" onclick="salvarCupom()">
+            + Criar cupom
+        </button>
+    </div>
+
+    <h2>Cupons cadastrados</h2>
+
+    <div id="listaCupons">
+        <p class="vazio">Nenhum cupom cadastrado.</p>
+    </div>
+
+</div>
+
 <button class="novo-pedido" onclick="novoPedido()">
     + Novo pedido
 </button>
@@ -254,7 +289,8 @@ h2 {
 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    async function entrarAdmin() {
+   async function entrarAdmin() {
+       
     const email = document.getElementById("emailAdmin").value;
     const senha = document.getElementById("senhaAdmin").value;
     const erro = document.getElementById("erroLogin");
@@ -275,6 +311,91 @@ h2 {
     document.getElementById("painelAdmin").style.display = "block";
     alert("Login realizado com sucesso! 💜");
 }
+    function abrirPromocoes() {
+    document.getElementById("painelAdmin").style.display = "none";
+    document.getElementById("areaPromocoes").style.display = "block";
+    carregarCupons();
+}
+
+    async function salvarCupom() {
+    const codigo = document.getElementById("cupomCodigo").value.trim().toUpperCase();
+    const tipo = document.getElementById("cupomTipo").value;
+    const valor = Number(document.getElementById("cupomValor").value);
+    const pedidoMinimo = Number(document.getElementById("cupomMinimo").value || 0);
+    const validade = document.getElementById("cupomValidade").value;
+    const limiteUsos = document.getElementById("cupomLimite").value;
+
+    if (!codigo || !valor || valor <= 0) {
+        alert("Preencha o código e o valor do desconto.");
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from("Cupons")
+        .insert({
+            codigo: codigo,
+            tipo: tipo,
+            valor: valor,
+            ativo: true,
+            pedido_minimo: pedidoMinimo,
+            validade: validade || null,
+            limite_usos: limiteUsos ? Number(limiteUsos) : null,
+            usos: 0
+        });
+
+    if (error) {
+        console.error(error);
+        alert("Não foi possível criar o cupom.");
+        return;
+    }
+
+    alert("Cupom criado com sucesso! 🎁");
+    carregarCupons();
+}
+
+    async function carregarCupons() {
+    const lista = document.getElementById("listaCupons");
+
+    const { data, error } = await supabaseClient
+        .from("Cupons")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error(error);
+        lista.innerHTML = '<p class="vazio">Não foi possível carregar os cupons.</p>';
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        lista.innerHTML = '<p class="vazio">Nenhum cupom cadastrado.</p>';
+        return;
+    }
+
+    lista.innerHTML = "";
+
+    data.forEach(cupom => {
+        const desconto = cupom.tipo === "percentual"
+            ? `${cupom.valor}%`
+            : dinheiro(Number(cupom.valor));
+
+        lista.innerHTML += `
+            <div class="pedido">
+                <div class="pedido-topo">
+                    <strong>${cupom.codigo}</strong>
+                    <span class="status">
+                        ${cupom.ativo ? "Ativo" : "Inativo"}
+                    </span>
+                </div>
+
+                <p><strong>Desconto:</strong> ${desconto}</p>
+                <p><strong>Pedido mínimo:</strong> ${dinheiro(Number(cupom.pedido_minimo || 0))}</p>
+                <p><strong>Usos:</strong> ${cupom.usos || 0}${cupom.limite_usos ? ` / ${cupom.limite_usos}` : ""}</p>
+            </div>
+        `;
+    });
+}
+
     
 let pedidos = [];
 
