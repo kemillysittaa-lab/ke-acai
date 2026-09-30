@@ -17,7 +17,8 @@ let carrinho = [];
 let cupomAplicado = null;
 let valorDesconto = 0;
 
-const campo = document.getElementById("codigo-cupom");
+async function validarCupom() {
+
     const campo = document.getElementById("codigo-cupom");
     const mensagem = document.getElementById("mensagem-cupom");
 
@@ -28,23 +29,22 @@ const campo = document.getElementById("codigo-cupom");
         return;
     }
 
-    const total = carrinho.reduce(
-        function(soma, item) {
-            return soma + item.preco;
-        },
-        0
-    );
+    const total = carrinho.reduce(function(soma, item) {
+        return soma + item.preco;
+    }, 0);
 
     if (total <= 0) {
         mensagem.textContent = "Adicione produtos ao carrinho primeiro.";
         return;
     }
 
-    const { data, error } = await supabaseClient
-        .rpc("validar_cupom", {
+    const { data, error } = await supabaseClient.rpc(
+        "validar_cupom",
+        {
             p_codigo: codigo,
             p_total: total
-        });
+        }
+    );
 
     if (error) {
         console.error(error);
@@ -53,6 +53,7 @@ const campo = document.getElementById("codigo-cupom");
     }
 
     if (!data || data.length === 0) {
+
         cupomAplicado = null;
         valorDesconto = 0;
 
@@ -74,8 +75,7 @@ const campo = document.getElementById("codigo-cupom");
         valorDesconto =
             total * (Number(cupom.valor) / 100);
     } else {
-        valorDesconto =
-            Number(cupom.valor);
+        valorDesconto = Number(cupom.valor);
     }
 
     if (valorDesconto > total) {
@@ -89,12 +89,11 @@ const campo = document.getElementById("codigo-cupom");
         "Cupom aplicado com sucesso! 💜";
 
     atualizarCarrinho();
-}document
+}
+
+document
     .getElementById("aplicar-cupom")
-    .addEventListener(
-        "click",
-        validarCupom
-    );
+    .addEventListener("click", validarCupom);
 
 
 // FORMATA VALORES
