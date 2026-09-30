@@ -843,7 +843,7 @@ if (erroPedido) {
         "Não foi possível registrar o pedido. Tente novamente."
     );
 
-    return;
+
 }
             // WHATSAPP
 
