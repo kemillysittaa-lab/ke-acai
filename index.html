@@ -7,447 +7,230 @@
 
     <title>Ke Açaí | Delivery</title>
 
+    <meta
+        name="description"
+        content="Ke Açaí Delivery - Açaí cremoso, caprichado e feito do seu jeito."
+    >
+
     <link rel="stylesheet" href="style.css">
 </head>
 
+
 <body>
 
-<header>
 
-    <div class="logo">
-        <h1>Ke Açaí</h1>
-        <p>Sabor que vicia 💜</p>
+<!-- =========================================
+     CABEÇALHO
+========================================= -->
+
+<header class="topo">
+
+    <div class="topo-conteudo">
+
+        <a href="#inicio" class="marca">
+            <strong>Ke Açaí</strong>
+            <span>Delivery</span>
+        </a>
+
+
+        <nav class="menu">
+
+            <a href="#cardapio">
+                Cardápio
+            </a>
+
+            <a href="#monte">
+                Monte seu Ke
+            </a>
+
+            <a href="#carrinho">
+                Carrinho
+            </a>
+
+        </nav>
+
     </div>
-
-    <nav>
-        <a href="#inicio">Início</a>
-        <a href="#cardapio">Cardápio</a>
-        <a href="#monte">Monte seu Ke</a>
-        <a href="#carrinho">Carrinho</a>
-    </nav>
 
 </header>
 
 
+
 <main>
 
-<!-- INÍCIO -->
 
-<section id="inicio" class="inicio">
+<!-- =========================================
+     INÍCIO
+========================================= -->
 
-    <p class="destaque">
-        💜 DELIVERY KE AÇAÍ
-    </p>
+<section id="inicio" class="inicio-faixa">
 
-    <h2>
-        Seu momento pede
-        <span>Ke Açaí.</span>
-    </h2>
+    <div class="faixa-conteudo">
 
-    <p>
-        Açaí cremoso, combinações deliciosas
-        e aquele capricho que deixa tudo melhor.
-    </p>
+        <div class="faixa-marca">
+            <span>KE AÇAÍ</span>
+            <small>DELIVERY</small>
+        </div>
 
-    <a href="#cardapio" class="botao-principal">
-        Ver cardápio
-    </a>
+        <div class="faixa-texto">
+            <span class="faixa-destaque">
+                A felicidade cabe
+            </span>
+
+            <h1>
+                em um copo.
+            </h1>
+
+            <p>
+                Açaí cremoso, caprichado e feito do seu jeito.
+            </p>
+        </div>
+
+        <a href="#cardapio" class="faixa-botao">
+            Ver cardápio
+        </a>
+
+    </div>
 
 </section>
 
 
 
-<!-- CARDÁPIO -->
+<!-- =========================================
+     CARDÁPIO
+========================================= -->
 
 <section id="cardapio" class="secao">
 
     <div class="titulo-secao">
 
-        <p>OS QUERIDINHOS</p>
-
-        <h2>Escolha seu Ke 💜</h2>
-
-        <span>
-            Escolha o tamanho e adicione ao carrinho.
+        <span class="mini-titulo">
+            CARDÁPIO
         </span>
+
+        <h2>
+            Os queridinhos da Ke
+        </h2>
+
+        <p>
+            Escolha seu favorito e deixe ainda
+            melhor com seus adicionais.
+        </p>
 
     </div>
 
 
+    <!-- Produtos carregados pelo Supabase -->
+
     <div class="produtos">
-
-
-        <!-- NUTELLA -->
-
-        <article class="produto">
-
-            <div class="icone-produto">🍫</div>
-
-            <h3>Ke Nutella</h3>
-
-            <p>
-                Açaí, Nutella, leite Ninho,
-                leite condensado e morango.
-            </p>
-
-            <select class="tamanho-produto">
-
-                <option value="14.99" data-tamanho="200ml">
-                    200ml — R$ 14,99
-                </option>
-
-                <option value="16.99" data-tamanho="300ml">
-                    300ml — R$ 16,99
-                </option>
-
-                <option value="19.99" data-tamanho="400ml">
-                    400ml — R$ 19,99
-                </option>
-
-                <option value="23.99" data-tamanho="500ml">
-                    500ml — R$ 23,99
-                </option>
-
-            </select>
-
-            <button class="adicionar-produto">
-                Adicionar ao carrinho 🛒
-            </button>
-
-        </article>
-
-
-
-        <!-- NINHO -->
-
-        <article class="produto">
-
-            <div class="icone-produto">🥛</div>
-
-            <h3>Ke Ninho</h3>
-
-            <p>
-                Açaí, leite Ninho,
-                leite condensado e morango.
-            </p>
-
-            <select class="tamanho-produto">
-
-                <option value="13.99" data-tamanho="200ml">
-                    200ml — R$ 13,99
-                </option>
-
-                <option value="14.99" data-tamanho="300ml">
-                    300ml — R$ 14,99
-                </option>
-
-                <option value="17.99" data-tamanho="400ml">
-                    400ml — R$ 17,99
-                </option>
-
-                <option value="20.99" data-tamanho="500ml">
-                    500ml — R$ 20,99
-                </option>
-
-            </select>
-
-            <button class="adicionar-produto">
-                Adicionar ao carrinho 🛒
-            </button>
-
-        </article>
-
-
-
-        <!-- PAÇOCA -->
-
-        <article class="produto">
-
-            <div class="icone-produto">🥜</div>
-
-            <h3>Ke Paçoca</h3>
-
-            <p>
-                Açaí, leite condensado,
-                paçoca, banana e morango.
-            </p>
-
-            <select class="tamanho-produto">
-
-                <option value="12.99" data-tamanho="200ml">
-                    200ml — R$ 12,99
-                </option>
-
-                <option value="13.99" data-tamanho="300ml">
-                    300ml — R$ 13,99
-                </option>
-
-                <option value="15.99" data-tamanho="400ml">
-                    400ml — R$ 15,99
-                </option>
-
-                <option value="18.99" data-tamanho="500ml">
-                    500ml — R$ 18,99
-                </option>
-
-            </select>
-
-            <button class="adicionar-produto">
-                Adicionar ao carrinho 🛒
-            </button>
-
-        </article>
-
-
-
-        <!-- TRADICIONAL -->
-
-        <article class="produto">
-
-            <div class="icone-produto">🍓</div>
-
-            <h3>Ke Tradicional</h3>
-
-            <p>
-                Açaí, leite condensado,
-                granola, banana e morango.
-            </p>
-
-            <select class="tamanho-produto">
-
-                <option value="12.99" data-tamanho="200ml">
-                    200ml — R$ 12,99
-                </option>
-
-                <option value="13.99" data-tamanho="300ml">
-                    300ml — R$ 13,99
-                </option>
-
-                <option value="15.99" data-tamanho="400ml">
-                    400ml — R$ 15,99
-                </option>
-
-                <option value="18.99" data-tamanho="500ml">
-                    500ml — R$ 18,99
-                </option>
-
-            </select>
-
-            <button class="adicionar-produto">
-                Adicionar ao carrinho 🛒
-            </button>
-
-        </article>
-
     </div>
 
 </section>
 
 
 
-<!-- MONTE SEU KE -->
+<!-- =========================================
+     MONTE SEU KE
+========================================= -->
 
-<section id="monte" class="secao">
+<section id="monte" class="secao monte-secao">
 
     <div class="titulo-secao">
 
-        <p>DO SEU JEITO</p>
-
-        <h2>Monte seu Ke 💜</h2>
-
-        <span>
-            Escolha o tamanho e seus adicionais favoritos.
+        <span class="mini-titulo">
+            DO SEU JEITO
         </span>
 
+        <h2>
+            Monte seu Ke
+        </h2>
+
+        <p>
+            Escolha o tamanho e monte sua
+            combinação favorita.
+        </p>
+
     </div>
+
 
 
     <div class="montagem">
 
 
-        <h3>1. Escolha o tamanho</h3>
+        <div class="montagem-etapa">
 
+            <span class="numero-etapa">
+                1
+            </span>
 
-        <select id="tamanho-monte">
+            <div>
 
-            <option value="12.99" data-tamanho="200ml">
-                200ml — R$ 12,99
-            </option>
+                <h3>
+                    Escolha o tamanho
+                </h3>
 
-            <option value="13.99" data-tamanho="300ml">
-                300ml — R$ 13,99
-            </option>
+                <p>
+                    Selecione o tamanho do seu açaí.
+                </p>
 
-            <option value="15.99" data-tamanho="400ml">
-                400ml — R$ 15,99
-            </option>
-
-            <option value="18.99" data-tamanho="500ml">
-                500ml — R$ 18,99
-            </option>
-
-        </select>
-
-
-
-        <h3>2. Escolha os adicionais</h3>
-
-
-        <div class="lista-adicionais">
-
-
-            <label class="adicional">
-
-                <span>
-                    <input
-                        type="checkbox"
-                        class="checkbox-adicional"
-                        data-nome="Banana"
-                        value="2">
-
-                    Banana
-                </span>
-
-                <strong>+ R$ 2,00</strong>
-
-            </label>
-
-
-            <label class="adicional">
-
-                <span>
-                    <input
-                        type="checkbox"
-                        class="checkbox-adicional"
-                        data-nome="Morango"
-                        value="3">
-
-                    Morango
-                </span>
-
-                <strong>+ R$ 3,00</strong>
-
-            </label>
-
-
-            <label class="adicional">
-
-                <span>
-                    <input
-                        type="checkbox"
-                        class="checkbox-adicional"
-                        data-nome="Leite Ninho"
-                        value="3.50">
-
-                    Leite Ninho
-                </span>
-
-                <strong>+ R$ 3,50</strong>
-
-            </label>
-
-
-            <label class="adicional">
-
-                <span>
-                    <input
-                        type="checkbox"
-                        class="checkbox-adicional"
-                        data-nome="Nutella"
-                        value="5.50">
-
-                    Nutella
-                </span>
-
-                <strong>+ R$ 5,50</strong>
-
-            </label>
-
-
-            <label class="adicional">
-
-                <span>
-                    <input
-                        type="checkbox"
-                        class="checkbox-adicional"
-                        data-nome="Leite condensado"
-                        value="2.50">
-
-                    Leite condensado
-                </span>
-
-                <strong>+ R$ 2,50</strong>
-
-            </label>
-
-
-            <label class="adicional">
-
-                <span>
-                    <input
-                        type="checkbox"
-                        class="checkbox-adicional"
-                        data-nome="Granola"
-                        value="3">
-
-                    Granola
-                </span>
-
-                <strong>+ R$ 3,00</strong>
-
-            </label>
-
-
-            <label class="adicional">
-
-                <span>
-                    <input
-                        type="checkbox"
-                        class="checkbox-adicional"
-                        data-nome="Paçoca"
-                        value="3">
-
-                    Paçoca
-                </span>
-
-                <strong>+ R$ 3,00</strong>
-
-            </label>
-
-
-            <label class="adicional">
-
-                <span>
-                    <input
-                        type="checkbox"
-                        class="checkbox-adicional"
-                        data-nome="Chocobol"
-                        value="2">
-
-                    Chocobol
-                </span>
-
-                <strong>+ R$ 2,00</strong>
-
-            </label>
+            </div>
 
         </div>
 
 
+
+        <select id="tamanho-monte">
+        </select>
+
+
+
+        <div class="montagem-etapa">
+
+            <span class="numero-etapa">
+                2
+            </span>
+
+            <div>
+
+                <h3>
+                    Escolha os adicionais
+                </h3>
+
+                <p>
+                    Adicione tudo que você gosta.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="lista-adicionais">
+        </div>
+
+
+
         <div class="total-montagem">
 
-            <span>Valor:</span>
+            <span>
+                Total
+            </span>
 
             <strong id="total-montagem">
-                R$ 12,99
+                R$ 0,00
             </strong>
 
         </div>
 
 
-        <button id="adicionar-montado">
-            Adicionar ao carrinho 🛒
+
+        <button
+            id="adicionar-montado"
+            class="botao-carrinho"
+        >
+            Adicionar ao carrinho
         </button>
+
 
     </div>
 
@@ -455,31 +238,57 @@
 
 
 
-<!-- CARRINHO -->
+<!-- =========================================
+     CARRINHO
+========================================= -->
 
 <section id="carrinho" class="secao">
 
     <div class="titulo-secao">
 
-        <p>SEU PEDIDO</p>
+        <span class="mini-titulo">
+            SEU PEDIDO
+        </span>
 
-        <h2>Carrinho 🛒</h2>
+        <h2>
+            Carrinho
+        </h2>
+
+        <p>
+            Confira os itens antes de finalizar.
+        </p>
 
     </div>
 
 
-    <div class="caixa-carrinho">
 
-        <p id="carrinho-vazio">
-            Seu carrinho está vazio.
-        </p>
-
-        <div id="itens-carrinho"></div>
+    <div class="carrinho-box">
 
 
-        <div class="total-pedido">
+        <div id="carrinho-vazio">
 
-            <span>Total dos produtos</span>
+            <p>
+                Seu carrinho está vazio.
+            </p>
+
+            <a href="#cardapio">
+                Escolher meu açaí
+            </a>
+
+        </div>
+
+
+
+        <div id="itens-carrinho">
+        </div>
+
+
+
+        <div class="resumo-pedido">
+
+            <span>
+                Total
+            </span>
 
             <strong id="total-pedido">
                 R$ 0,00
@@ -487,9 +296,53 @@
 
         </div>
 
-        <p class="aviso-entrega">
-            🛵 Taxa de entrega a confirmar de acordo com o endereço.
-        </p>
+
+
+        <!-- CUPOM -->
+
+        <div class="area-cupom">
+
+            <h3>
+                Cupom de desconto
+            </h3>
+
+            <div class="linha-cupom">
+
+                <input
+                    type="text"
+                    id="codigo-cupom"
+                    placeholder="Digite seu cupom"
+                    autocomplete="off"
+                >
+
+                <button
+                    type="button"
+                    id="aplicar-cupom"
+                >
+                    Aplicar
+                </button>
+
+            </div>
+
+
+            <p id="mensagem-cupom">
+            </p>
+
+
+            <div class="desconto-cupom">
+
+                <span>
+                    Desconto
+                </span>
+
+                <strong id="valor-desconto">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+        </div>
+
 
     </div>
 
@@ -497,30 +350,45 @@
 
 
 
-<!-- DADOS PARA ENTREGA -->
+<!-- =========================================
+     ENTREGA
+========================================= -->
 
-<section class="secao">
+<section id="entrega" class="secao">
 
     <div class="titulo-secao">
 
-        <p>QUASE LÁ</p>
+        <span class="mini-titulo">
+            FINALIZAR
+        </span>
 
-        <h2>Dados para entrega 🛵</h2>
+        <h2>
+            Dados para entrega
+        </h2>
+
+        <p>
+            Preencha seus dados para enviar
+            o pedido pelo WhatsApp.
+        </p>
 
     </div>
+
 
 
     <div class="dados-entrega">
 
 
         <label for="nome">
-            Seu nome *
+            Nome *
         </label>
 
         <input
             type="text"
             id="nome"
-            placeholder="Digite seu nome">
+            placeholder="Seu nome"
+            autocomplete="name"
+        >
+
 
 
         <label for="telefone">
@@ -530,7 +398,10 @@
         <input
             type="tel"
             id="telefone"
-            placeholder="(16) 99999-9999">
+            placeholder="(16) 99999-9999"
+            autocomplete="tel"
+        >
+
 
 
         <label for="rua">
@@ -540,10 +411,13 @@
         <input
             type="text"
             id="rua"
-            placeholder="Ex.: Rua das Flores">
+            placeholder="Nome da rua"
+        >
+
 
 
         <div class="duas-colunas">
+
 
             <div>
 
@@ -554,9 +428,11 @@
                 <input
                     type="text"
                     id="numero"
-                    placeholder="123">
+                    placeholder="123"
+                >
 
             </div>
+
 
 
             <div>
@@ -568,11 +444,14 @@
                 <input
                     type="text"
                     id="bairro"
-                    placeholder="Seu bairro">
+                    placeholder="Seu bairro"
+                >
 
             </div>
 
+
         </div>
+
 
 
         <label for="complemento">
@@ -582,18 +461,19 @@
         <input
             type="text"
             id="complemento"
-            placeholder="Apartamento, bloco, referência...">
+            placeholder="Apartamento, bloco, referência..."
+        >
+
 
 
         <label for="pagamento">
             Forma de pagamento *
         </label>
 
-
         <select id="pagamento">
 
             <option value="">
-                Escolha uma opção
+                Escolha
             </option>
 
             <option value="Pix">
@@ -611,18 +491,24 @@
         </select>
 
 
-        <div id="campo-troco">
+
+        <div
+            id="campo-troco"
+            style="display:none;"
+        >
 
             <label for="troco">
-                Precisa de troco para quanto?
+                Troco para quanto?
             </label>
 
             <input
                 type="text"
                 id="troco"
-                placeholder="Ex.: R$ 50,00">
+                placeholder="Ex.: R$ 50,00"
+            >
 
         </div>
+
 
 
         <label for="observacao">
@@ -632,52 +518,101 @@
         <textarea
             id="observacao"
             rows="4"
-            placeholder="Ex.: sem granola, tocar interfone..."></textarea>
+            placeholder="Alguma observação sobre o pedido?"
+        ></textarea>
 
 
-        <button id="finalizar">
-            Finalizar pedido pelo WhatsApp 💚
+
+        <button
+            id="finalizar"
+            class="botao-finalizar"
+        >
+            Finalizar pelo WhatsApp
         </button>
 
 
+
         <p class="aviso-final">
-            Ao finalizar, seu pedido será enviado para
-            o WhatsApp da Ke Açaí.
+            A taxa de entrega será confirmada
+            no atendimento.
         </p>
+
 
     </div>
 
 </section>
 
+
 </main>
 
 
 
+<!-- =========================================
+     RODAPÉ
+========================================= -->
+
 <footer>
 
-    <h2>Ke Açaí 💜</h2>
+    <div class="footer-conteudo">
 
-    <p>
-        Mais que açaí, é um momento de felicidade.
-    </p>
+        <div>
 
-    <p>
-        Delivery • (16) 99621-1605
-    </p>
+            <strong class="footer-logo">
+                Ke Açaí
+            </strong>
 
-    <p style="margin-top: 15px;">
-    <a href="admin.html" class="acesso-admin">
-        🔐 Área Administrativa
-    </a>
-</p>
+            <p>
+                A felicidade cabe em um copo.
+            </p>
+
+        </div>
+
+
+        <div class="footer-delivery">
+
+            <strong>
+                Delivery
+            </strong>
+
+            <p>
+                (16) 99621-1605
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-final">
+
+        <span>
+            Ke Açaí
+        </span>
+
+
+        <a
+            href="admin.html"
+            class="acesso-admin"
+        >
+            Área Administrativa
+        </a>
+
+    </div>
 
 </footer>
 
 
+
+<!-- =========================================
+     SCRIPTS
+========================================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
 <script src="script.js"></script>
+
 
 </body>
 </html>
-
-<!-- atualização -->
-
