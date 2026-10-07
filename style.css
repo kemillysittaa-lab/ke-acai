@@ -1,3 +1,32 @@
+/* =====================================================
+   KE AÇAÍ — VISUAL FINAL
+===================================================== */
+
+:root {
+    --fundo: #12070f;
+    --fundo-secundario: #190b16;
+    --card: #24101f;
+    --card-2: #2d1327;
+
+    --rosa: #ed4f9a;
+    --rosa-claro: #ff72b5;
+    --dourado: #ffc857;
+
+    --branco: #fffafd;
+    --texto: #f7edf4;
+    --suave: #cdbbc8;
+
+    --borda: rgba(255, 255, 255, 0.09);
+    --borda-rosa: rgba(237, 79, 154, 0.32);
+
+    --sombra: 0 20px 50px rgba(0, 0, 0, 0.28);
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,495 +35,1790 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
 }
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: linear-gradient(180deg, #150812, #0d060c);
-    color: white;
+
+    background:
+        radial-gradient(
+            circle at 85% 5%,
+            rgba(117, 17, 91, 0.12),
+            transparent 30%
+        ),
+        var(--fundo);
+
+    color: var(--texto);
+
+    line-height: 1.5;
+
+    overflow-x: hidden;
 }
 
-/* CABEÇALHO */
-
-header {
-    background: rgba(24, 8, 21, 0.96);
-    padding: 18px;
-    text-align: center;
-    border-bottom: 1px solid #5f294f;
+button,
+input,
+select,
+textarea {
+    font: inherit;
 }
 
-.logo h1 {
-    color: #f4c45f;
-    font-size: 38px;
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
 }
 
-.logo p {
-    color: #ef5ca8;
-    margin-top: 4px;
+button {
+    cursor: pointer;
 }
 
-nav {
-    margin-top: 18px;
+img {
+    max-width: 100%;
 }
 
-nav a {
-    display: inline-block;
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 6px 10px;
+
+/* =====================================================
+   CABEÇALHO
+===================================================== */
+
+.topo {
+    position: sticky;
+    top: 0;
+
+    z-index: 100;
+
+    background: rgba(14, 5, 12, 0.95);
+
+    backdrop-filter: blur(14px);
+
+    border-bottom: 1px solid var(--borda);
 }
 
-nav a:hover {
-    color: #f4c45f;
+.topo-conteudo {
+    width: min(1180px, calc(100% - 40px));
+
+    min-height: 72px;
+
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
 }
 
-/* INÍCIO */
-
-.inicio {
-    min-height: 520px;
+.marca {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 50px 20px;
-    background: radial-gradient(circle at top, #6f105e, #160914 65%);
-}
 
-.destaque {
-    color: #ef5ca8;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
+    text-decoration: none;
 
-.inicio h2 {
-    max-width: 750px;
-    font-size: 60px;
     line-height: 1;
-    margin-bottom: 20px;
 }
 
-.inicio h2 span {
-    color: #f4c45f;
+.marca strong {
+    color: var(--dourado);
+
+    font-size: 24px;
+    font-weight: 900;
 }
 
-.inicio > p:not(.destaque) {
-    max-width: 600px;
-    color: #d8c8d2;
-    font-size: 18px;
-    line-height: 1.5;
-    margin-bottom: 25px;
+.marca span {
+    margin-top: 7px;
+
+    color: var(--suave);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+
+    gap: 30px;
+}
+
+.menu a {
+    position: relative;
+
+    padding: 25px 0;
+
+    color: var(--texto);
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    transition: color 0.2s;
+}
+
+.menu a:hover {
+    color: var(--dourado);
+}
+
+.menu a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: 19px;
+
+    width: 0;
+    height: 2px;
+
+    border-radius: 5px;
+
+    background: var(--dourado);
+
+    transition: width 0.2s;
+}
+
+.menu a:hover::after {
+    width: 100%;
+}
+
+
+/* =====================================================
+   HERO / INÍCIO
+===================================================== */
+
+.inicio {
+    padding: 58px 20px 60px;
+}
+
+.inicio-conteudo {
+    width: min(1120px, 100%);
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(420px, 0.95fr);
+
+    align-items: center;
+
+    gap: 65px;
+}
+
+.inicio-texto {
+    max-width: 590px;
+}
+
+.inicio-tag {
+    display: inline-block;
+
+    margin-bottom: 18px;
+
+    color: var(--rosa-claro);
+
+    font-size: 11px;
+    font-weight: 900;
+
+    letter-spacing: 2.6px;
+}
+
+.inicio h1 {
+    max-width: 590px;
+
+    color: var(--branco);
+
+    font-size: clamp(48px, 5.4vw, 68px);
+    font-weight: 900;
+
+    line-height: 1.02;
+
+    letter-spacing: -2.2px;
+}
+
+.inicio h1 span {
+    display: block;
+
+    color: var(--dourado);
+}
+
+.inicio-texto > p {
+    max-width: 470px;
+
+    margin: 22px 0 28px;
+
+    color: var(--suave);
+
+    font-size: 17px;
+
+    line-height: 1.6;
 }
 
 .botao-principal {
-    background: #f4c45f;
-    color: #291020;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 15px 25px;
+    min-height: 50px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 27px;
+
     border-radius: 12px;
+
+    background: var(--dourado);
+
+    color: #27131f;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 900;
+
+    box-shadow:
+        0 10px 25px
+        rgba(255, 200, 87, 0.12);
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
 }
 
-/* AVISO LOJA */
+.botao-principal:hover {
+    transform: translateY(-2px);
 
-.aviso-loja {
-    max-width: 900px;
-    margin: 25px auto 0;
-    padding: 17px 20px;
-    background: #701c47;
-    border: 1px solid #ef5ca8;
-    border-radius: 14px;
-    text-align: center;
-    font-weight: bold;
+    box-shadow:
+        0 14px 30px
+        rgba(255, 200, 87, 0.20);
 }
 
-/* SEÇÕES */
+
+/* =====================================================
+   FOTO PRINCIPAL
+===================================================== */
+
+.inicio-foto {
+    position: relative;
+
+    width: 100%;
+    height: 410px;
+
+    overflow: hidden;
+
+    border-radius: 26px;
+
+    border: 1px solid var(--borda-rosa);
+
+    background: var(--card);
+
+    box-shadow: var(--sombra);
+}
+
+.inicio-foto img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+}
+
+.inicio-foto::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            180deg,
+            transparent 75%,
+            rgba(0, 0, 0, 0.12)
+        );
+}
+
+
+/* =====================================================
+   SEÇÕES
+===================================================== */
 
 .secao {
-    max-width: 1100px;
+    width: min(1120px, calc(100% - 40px));
+
     margin: auto;
-    padding: 60px 20px;
+
+    padding: 65px 0;
 }
 
 .titulo-secao {
+    max-width: 600px;
+
+    margin: 0 auto 36px;
+
     text-align: center;
-    margin-bottom: 30px;
 }
 
-.titulo-secao > p {
-    color: #ef5ca8;
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
+.mini-titulo {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: var(--rosa-claro);
+
+    font-size: 10px;
+    font-weight: 900;
+
+    letter-spacing: 2.7px;
 }
 
 .titulo-secao h2 {
-    color: #f4c45f;
-    font-size: 36px;
-    margin-bottom: 8px;
+    color: var(--branco);
+
+    font-size: clamp(30px, 3.7vw, 42px);
+
+    line-height: 1.1;
 }
 
-.titulo-secao span {
-    color: #d8c8d2;
+.titulo-secao p {
+    max-width: 500px;
+
+    margin: 11px auto 0;
+
+    color: var(--suave);
+
+    font-size: 14px;
+
+    line-height: 1.6;
 }
 
-.carregando {
-    grid-column: 1 / -1;
-    text-align: center;
-    color: #d8c8d2;
-    padding: 30px;
-}
 
-/* PRODUTOS */
+/* =====================================================
+   CARDÁPIO
+===================================================== */
+
+#cardapio {
+    padding-top: 50px;
+}
 
 .produtos {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 420px));
+
+    justify-content: center;
+
+    gap: 26px;
 }
 
 .produto {
-    background: linear-gradient(180deg, #2b1126, #1b0c18);
-    border: 1px solid #5e2852;
+    width: 100%;
+
+    overflow: hidden;
+
+    border: 1px solid var(--borda-rosa);
+
     border-radius: 22px;
-    padding: 25px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #281022 0%,
+            #1e0c1a 100%
+        );
+
+    box-shadow:
+        0 18px 40px
+        rgba(0, 0, 0, 0.22);
+
+    transition:
+        transform 0.25s,
+        border-color 0.25s;
+}
+
+.produto:hover {
+    transform: translateY(-4px);
+
+    border-color:
+        rgba(237, 79, 154, 0.60);
+}
+
+
+/* =====================================================
+   FOTOS DOS PRODUTOS
+===================================================== */
+
+.foto-produto-container {
+    width: 100%;
+    height: 260px;
+
+    overflow: hidden;
+
+    background: #170914;
+}
+
+.foto-produto {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    transition: transform 0.35s ease;
+}
+
+.produto:hover .foto-produto {
+    transform: scale(1.035);
 }
 
 .icone-produto {
-    font-size: 38px;
-    margin-bottom: 12px;
+    height: 180px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 50px;
+}
+
+
+/* =====================================================
+   CONTEÚDO DO PRODUTO
+===================================================== */
+
+.conteudo-produto {
+    padding: 21px;
 }
 
 .produto h3 {
-    color: #f4c45f;
-    font-size: 25px;
-    margin-bottom: 10px;
+    margin-bottom: 7px;
+
+    color: var(--dourado);
+
+    font-size: 22px;
+    font-weight: 900;
 }
 
 .produto p {
-    color: #d8c8d2;
-    line-height: 1.5;
-    min-height: 48px;
-    margin-bottom: 18px;
+    min-height: 65px;
+
+    margin-bottom: 17px;
+
+    color: var(--suave);
+
+    font-size: 13px;
+
+    line-height: 1.55;
 }
 
-/* SELECTS E CAMPOS */
+
+/* =====================================================
+   CAMPOS
+===================================================== */
 
 select,
 input,
 textarea {
     width: 100%;
-    padding: 13px;
-    background: #160914;
-    color: white;
-    border: 1px solid #663158;
-    border-radius: 10px;
+
     outline: none;
-    font-size: 15px;
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.13);
+
+    border-radius: 11px;
+
+    background: #160a13;
+
+    color: var(--branco);
+
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+}
+
+select,
+input {
+    min-height: 47px;
+
+    padding: 0 13px;
+}
+
+textarea {
+    min-height: 105px;
+
+    padding: 13px;
+
+    resize: vertical;
 }
 
 select:focus,
 input:focus,
 textarea:focus {
-    border-color: #ef5ca8;
+    border-color: var(--rosa);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(237, 79, 154, 0.08);
 }
 
-.produto select {
-    margin-bottom: 12px;
+
+/* =====================================================
+   ADICIONAIS DOS PRODUTOS
+===================================================== */
+
+.adicionais-produto-container {
+    margin-top: 11px;
 }
 
-/* BOTÕES */
-
-button {
+.abrir-adicionais-produto {
     width: 100%;
-    padding: 14px;
-    border: none;
+
+    min-height: 44px;
+
+    padding: 10px 14px;
+
+    border: 1px solid var(--borda-rosa);
+
     border-radius: 11px;
-    background: #ef5ca8;
+
+    background:
+        rgba(237, 79, 154, 0.08);
+
+    color: var(--rosa-claro);
+
+    font-size: 13px;
+    font-weight: 800;
+
+    transition: background 0.2s;
+}
+
+.abrir-adicionais-produto:hover {
+    background:
+        rgba(237, 79, 154, 0.15);
+}
+
+.lista-adicionais-produto {
+    grid-template-columns: 1fr;
+
+    gap: 7px;
+
+    margin-top: 9px;
+}
+
+.adicional-produto {
+    padding: 9px 11px !important;
+}
+
+
+/* =====================================================
+   TOTAL DO PRODUTO
+===================================================== */
+
+.total-produto {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 16px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid var(--borda);
+}
+
+.total-produto span {
+    color: var(--suave);
+
+    font-size: 13px;
+}
+
+.total-produto strong {
+    color: var(--dourado);
+
+    font-size: 20px;
+}
+
+.adicionar-produto {
+    width: 100%;
+
+    min-height: 46px;
+
+    margin-top: 12px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    background: var(--rosa);
+
     color: white;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
+
+    font-size: 13px;
+    font-weight: 900;
+
+    transition:
+        transform 0.2s,
+        background 0.2s;
 }
 
-button:hover {
-    background: #f4c45f;
-    color: #291020;
+.adicionar-produto:hover {
+    transform: translateY(-1px);
+
+    background: var(--rosa-claro);
 }
 
-button:disabled {
-    opacity: 0.55;
-    cursor: not-allowed;
+
+/* =====================================================
+   MONTE SEU KE
+===================================================== */
+
+.monte-secao {
+    width: 100%;
+    max-width: none;
+
+    padding:
+        70px 20px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(82, 15, 68, 0.16),
+            rgba(18, 7, 15, 0)
+        );
 }
 
-/* MONTE SEU KE */
+.monte-secao .titulo-secao {
+    max-width: 600px;
+}
 
 .montagem {
-    max-width: 750px;
+    width: min(900px, 100%);
+
     margin: auto;
-    background: #281022;
-    border: 1px solid #724064;
-    border-radius: 22px;
-    padding: 28px;
+
+    padding: 32px;
+
+    border: 1px solid var(--borda-rosa);
+
+    border-radius: 23px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #291124,
+            #21101d
+        );
+
+    box-shadow: var(--sombra);
 }
 
-.montagem h3 {
-    color: #ef5ca8;
-    margin: 20px 0 12px;
-}
+.montagem-etapa {
+    display: flex;
+    align-items: center;
 
-#tamanho-monte {
+    gap: 13px;
+
     margin-bottom: 15px;
 }
 
+.montagem-etapa:not(:first-child) {
+    margin-top: 29px;
+}
+
+.numero-etapa {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--dourado);
+
+    color: #2b1522;
+
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.montagem-etapa h3 {
+    color: var(--branco);
+
+    font-size: 17px;
+}
+
+.montagem-etapa p {
+    margin-top: 2px;
+
+    color: var(--suave);
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   ADICIONAIS
+===================================================== */
+
 .lista-adicionais {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
     gap: 9px;
 }
 
 .adicional {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    background: #371530;
-    padding: 13px;
+    justify-content: space-between;
+
+    gap: 9px;
+
+    padding: 12px;
+
+    border: 1px solid var(--borda);
+
     border-radius: 10px;
+
+    background: var(--card-2);
+
+    color: var(--texto);
+
     cursor: pointer;
+
+    transition:
+        border-color 0.2s,
+        background 0.2s;
+}
+
+.adicional:hover {
+    border-color: var(--borda-rosa);
+
+    background: #35162e;
+}
+
+.adicional span {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 12px;
 }
 
 .adicional input {
-    width: auto;
-    margin-right: 7px;
+    width: 16px;
+    height: 16px;
+
+    min-height: auto;
+
+    flex: 0 0 16px;
+
+    accent-color: var(--rosa);
 }
 
 .adicional strong {
-    color: #f4c45f;
-    font-size: 13px;
+    color: var(--dourado);
+
+    white-space: nowrap;
+
+    font-size: 11px;
 }
+
+
+/* =====================================================
+   TOTAL MONTE SEU KE
+===================================================== */
 
 .total-montagem {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background: #150812;
-    padding: 18px;
-    border-radius: 12px;
-    margin: 22px 0;
+    justify-content: space-between;
+
+    margin-top: 25px;
+
+    padding: 18px 0;
+
+    border-top: 1px solid var(--borda);
+}
+
+.total-montagem span {
+    color: var(--suave);
+
+    font-size: 14px;
 }
 
 .total-montagem strong {
-    color: #f4c45f;
+    color: var(--dourado);
+
     font-size: 25px;
 }
 
-/* CARRINHO */
+.botao-carrinho {
+    width: 100%;
 
-.caixa-carrinho {
-    max-width: 750px;
+    min-height: 48px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    background: var(--rosa);
+
+    color: white;
+
+    font-weight: 900;
+
+    transition:
+        transform 0.2s,
+        background 0.2s;
+}
+
+.botao-carrinho:hover {
+    transform: translateY(-1px);
+
+    background: var(--rosa-claro);
+}
+
+
+/* =====================================================
+   CARRINHO
+===================================================== */
+
+.carrinho-box {
+    width: min(820px, 100%);
+
     margin: auto;
-    background: #281022;
+
+    padding: 28px;
+
+    border: 1px solid var(--borda);
+
     border-radius: 22px;
-    padding: 25px;
-    border: 1px solid #633057;
+
+    background: var(--card);
+
+    box-shadow: var(--sombra);
 }
 
 #carrinho-vazio {
-    color: #cdbcc8;
+    padding: 30px 15px;
+
     text-align: center;
-    padding: 20px;
+
+    color: var(--suave);
+}
+
+#carrinho-vazio a {
+    display: inline-block;
+
+    margin-top: 10px;
+
+    color: var(--dourado);
+
+    font-size: 13px;
+    font-weight: 800;
 }
 
 .item-carrinho {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    background: #35142f;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 10px;
+
+    gap: 18px;
+
+    padding: 17px 0;
+
+    border-bottom: 1px solid var(--borda);
 }
 
 .item-carrinho h4 {
-    color: #f4c45f;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
+
+    color: var(--branco);
+
+    font-size: 16px;
 }
 
 .item-carrinho p {
-    color: #d8c8d2;
-    font-size: 14px;
-    margin-top: 3px;
-}
+    color: var(--suave);
 
-.preco-item {
-    color: #f4c45f;
-    font-weight: bold;
-    text-align: right;
-}
-
-.remover {
-    width: auto;
-    padding: 6px 9px;
-    margin-top: 7px;
-    background: #701c47;
     font-size: 12px;
 }
 
-.total-pedido,
-.desconto-cupom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #150812;
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 20px;
+.preco-item {
+    min-width: 105px;
+
+    text-align: right;
+
+    color: var(--dourado);
+
+    font-size: 14px;
+    font-weight: 900;
 }
 
-.total-pedido strong {
-    color: #f4c45f;
+.remover {
+    display: block;
+
+    margin: 6px 0 0 auto;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: var(--rosa-claro);
+
+    font-size: 11px;
+}
+
+.resumo-pedido {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 18px;
+
+    padding: 18px 0;
+
+    border-top: 1px solid var(--borda);
+}
+
+.resumo-pedido span {
+    font-size: 15px;
+}
+
+.resumo-pedido strong {
+    color: var(--dourado);
+
     font-size: 25px;
 }
 
-.desconto-cupom strong {
-    color: #ef5ca8;
+
+/* =====================================================
+   CUPOM
+===================================================== */
+
+.area-cupom {
+    margin-top: 18px;
+
+    padding: 20px;
+
+    border: 1px solid var(--borda);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
 }
 
-/* CUPOM */
+.area-cupom h3 {
+    margin-bottom: 12px;
 
-.cupom-area {
-    margin-top: 22px;
+    font-size: 15px;
 }
 
-.cupom-area label {
-    display: block;
-    color: #f4c45f;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.cupom-linha {
+.linha-cupom {
     display: grid;
-    grid-template-columns: 1fr 130px;
+
+    grid-template-columns:
+        1fr auto;
+
     gap: 8px;
 }
 
+.linha-cupom button {
+    min-width: 100px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    padding: 0 17px;
+
+    background: var(--dourado);
+
+    color: #2b1522;
+
+    font-size: 12px;
+    font-weight: 900;
+}
+
 #mensagem-cupom {
-    margin-top: 8px;
-    color: #d8c8d2;
-    font-size: 14px;
+    margin-top: 9px;
+
+    color: var(--rosa-claro);
+
+    font-size: 12px;
 }
 
-.aviso-entrega {
-    color: #d8c8d2;
-    font-size: 14px;
-    margin-top: 15px;
-    text-align: center;
+.desconto-cupom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 13px;
+
+    padding-top: 13px;
+
+    border-top: 1px solid var(--borda);
+
+    color: var(--suave);
+
+    font-size: 13px;
 }
 
-/* DADOS ENTREGA */
+.desconto-cupom strong {
+    color: var(--dourado);
+}
+
+
+/* =====================================================
+   DADOS DE ENTREGA
+===================================================== */
 
 .dados-entrega {
-    max-width: 750px;
+    width: min(730px, 100%);
+
     margin: auto;
-    background: #281022;
-    padding: 28px;
+
+    padding: 30px;
+
+    border: 1px solid var(--borda);
+
     border-radius: 22px;
-    border: 1px solid #633057;
+
+    background: var(--card);
+
+    box-shadow: var(--sombra);
 }
 
 .dados-entrega label {
     display: block;
-    margin: 15px 0 7px;
-    color: #f4c45f;
-    font-weight: bold;
+
+    margin: 16px 0 6px;
+
+    color: var(--texto);
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.dados-entrega > label:first-child {
+    margin-top: 0;
 }
 
 .duas-colunas {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 12px;
+
+    grid-template-columns:
+        0.55fr 1.45fr;
+
+    gap: 11px;
 }
 
-#campo-troco {
-    display: none;
-}
+.botao-finalizar {
+    width: 100%;
 
-#finalizar {
-    margin-top: 25px;
+    min-height: 50px;
+
+    margin-top: 23px;
+
+    border: 0;
+
+    border-radius: 11px;
+
     background: #25d366;
-    color: #08160c;
-    font-size: 17px;
+
+    color: #071b0e;
+
+    font-size: 13px;
+    font-weight: 900;
+
+    transition: transform 0.2s;
 }
 
-#finalizar:hover {
-    background: #1fbd5b;
+.botao-finalizar:hover {
+    transform: translateY(-1px);
 }
 
 .aviso-final {
-    color: #bbaab6;
+    margin-top: 11px;
+
     text-align: center;
-    font-size: 13px;
-    margin-top: 12px;
+
+    color: var(--suave);
+
+    font-size: 11px;
 }
 
-/* RODAPÉ */
+
+/* =====================================================
+   RODAPÉ
+===================================================== */
 
 footer {
-    text-align: center;
-    padding: 40px 20px;
+    margin-top: 30px;
+
+    padding:
+        40px 20px
+        22px;
+
     background: #0c050a;
-    color: #cdbcc8;
+
+    border-top: 1px solid var(--borda);
 }
 
-footer h2 {
-    color: #f4c45f;
-    margin-bottom: 10px;
+.footer-conteudo {
+    width: min(1120px, 100%);
+
+    margin: auto;
+
+    display: flex;
+    justify-content: space-between;
+
+    gap: 30px;
 }
 
-footer p {
-    margin: 5px;
+.footer-logo {
+    color: var(--dourado);
+
+    font-size: 22px;
 }
 
-/* CELULAR */
+.footer-conteudo p {
+    margin-top: 4px;
+
+    color: var(--suave);
+
+    font-size: 12px;
+}
+
+.footer-delivery {
+    text-align: right;
+}
+
+.footer-final {
+    width: min(1120px, 100%);
+
+    margin: 26px auto 0;
+
+    padding-top: 18px;
+
+    border-top: 1px solid var(--borda);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: #8e7d89;
+
+    font-size: 10px;
+}
+
+.acesso-admin {
+    color: #8e7d89;
+
+    text-decoration: none;
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .inicio-conteudo {
+        grid-template-columns:
+            1fr 0.9fr;
+
+        gap: 35px;
+    }
+
+    .inicio h1 {
+        font-size: 48px;
+    }
+
+    .inicio-foto {
+        height: 350px;
+    }
+
+    .lista-adicionais {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* =====================================================
+   CELULAR
+===================================================== */
 
 @media (max-width: 700px) {
 
-    .inicio h2 {
-        font-size: 44px;
+    .topo-conteudo {
+        width: calc(100% - 28px);
+
+        min-height: 64px;
     }
+
+    .marca strong {
+        font-size: 20px;
+    }
+
+    .marca span {
+        display: none;
+    }
+
+    .menu {
+        gap: 14px;
+    }
+
+    .menu a {
+        padding: 22px 0;
+
+        font-size: 11px;
+    }
+
+    .menu a:nth-child(3) {
+        display: none;
+    }
+
+
+    /* HERO */
+
+    .inicio {
+        padding:
+            40px 15px
+            45px;
+    }
+
+    .inicio-conteudo {
+        display: flex;
+        flex-direction: column;
+
+        gap: 28px;
+    }
+
+    .inicio-texto {
+        width: 100%;
+
+        text-align: center;
+    }
+
+    .inicio-tag {
+        margin-bottom: 13px;
+
+        font-size: 9px;
+    }
+
+    .inicio h1 {
+        max-width: 480px;
+
+        margin: auto;
+
+        font-size:
+            clamp(
+                39px,
+                12vw,
+                54px
+            );
+
+        line-height: 1.02;
+
+        letter-spacing: -1.4px;
+    }
+
+    .inicio-texto > p {
+        max-width: 390px;
+
+        margin:
+            17px auto
+            22px;
+
+        font-size: 14px;
+    }
+
+    .botao-principal {
+        width: 100%;
+
+        max-width: 300px;
+    }
+
+    .inicio-foto {
+        width: 100%;
+        height: 330px;
+
+        border-radius: 20px;
+    }
+
+
+    /* SEÇÕES */
+
+    .secao {
+        width:
+            calc(100% - 28px);
+
+        padding: 52px 0;
+    }
+
+    #cardapio {
+        padding-top: 38px;
+    }
+
+    .titulo-secao {
+        margin-bottom: 27px;
+    }
+
+    .titulo-secao h2 {
+        font-size: 30px;
+    }
+
+    .titulo-secao p {
+        font-size: 13px;
+    }
+
+
+    /* PRODUTOS */
 
     .produtos {
         grid-template-columns: 1fr;
+
+        gap: 20px;
+    }
+
+    .foto-produto-container {
+        height: 245px;
+    }
+
+    .conteudo-produto {
+        padding: 18px;
+    }
+
+    .produto h3 {
+        font-size: 20px;
+    }
+
+    .produto p {
+        min-height: auto;
+
+        font-size: 12px;
+    }
+
+
+    /* MONTE */
+
+    .monte-secao {
+        width: 100%;
+
+        padding:
+            55px 14px;
+    }
+
+    .montagem {
+        padding:
+            21px 16px;
+
+        border-radius: 18px;
     }
 
     .lista-adicionais {
         grid-template-columns: 1fr;
     }
 
-    .duas-colunas {
-        grid-template-columns: 1fr;
+    .total-montagem strong {
+        font-size: 22px;
     }
 
-    .cupom-linha {
-        grid-template-columns: 1fr;
-    }
 
-    .secao {
-        padding: 45px 15px;
-    }
+    /* CARRINHO */
 
-    .montagem,
-    .caixa-carrinho,
+    .carrinho-box,
     .dados-entrega {
-        padding: 20px;
+        padding:
+            20px 16px;
+
+        border-radius: 18px;
     }
 
     .item-carrinho {
-        align-items: flex-start;
+        gap: 8px;
     }
+
+    .preco-item {
+        min-width: 85px;
+    }
+
+    .linha-cupom {
+        grid-template-columns: 1fr;
+    }
+
+    .linha-cupom button {
+        min-height: 44px;
+    }
+
+
+    /* ENTREGA */
+
+    .duas-colunas {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+
+    /* RODAPÉ */
+
+    .footer-conteudo {
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+    .footer-delivery {
+        text-align: center;
+    }
+
+    .footer-final {
+        flex-direction: column;
+
+        gap: 9px;
+
+        text-align: center;
+    }
+
+}
+
+
+/* =====================================================
+   CELULAR PEQUENO
+===================================================== */
+
+@media (max-width: 430px) {
+
+    .menu a:nth-child(2) {
+        display: none;
+    }
+
+    .inicio-foto {
+        height: 285px;
+    }
+
+    .foto-produto-container {
+        height: 225px;
+    }
+
+    .inicio h1 {
+        font-size: 40px;
+    }
+
+}
+
+/* =========================================
+   ÁREA ADMINISTRATIVA
+========================================= */
+
+.acesso-admin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 18px;
+
+    border: 1px solid rgba(255, 200, 87, 0.35);
+    border-radius: 10px;
+
+    background: rgba(255, 200, 87, 0.06);
+
+    color: #ffc857;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    text-decoration: none;
+
+    transition: 0.2s;
+}
+
+.acesso-admin::before {
+    content: "🔐";
+    margin-right: 7px;
+}
+
+.acesso-admin:hover {
+    background: #ffc857;
+    color: #27131f;
+}
+
+/* =====================================================
+   FAIXA PRINCIPAL KE AÇAÍ
+===================================================== */
+
+.inicio-faixa {
+    width: 100%;
+    padding: 34px 20px 18px;
+}
+
+.faixa-conteudo {
+    position: relative;
+
+    width: min(1180px, 100%);
+    min-height: 235px;
+
+    margin: auto;
+    padding: 38px 48px;
+
+    display: grid;
+    grid-template-columns: 170px 1fr auto;
+    align-items: center;
+    gap: 42px;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 111, 181, 0.28);
+    border-radius: 25px;
+
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 93, 170, 0.23),
+            transparent 28%
+        ),
+        linear-gradient(
+            120deg,
+            #2b0a23 0%,
+            #57103f 50%,
+            #321027 100%
+        );
+
+    box-shadow:
+        0 22px 55px rgba(0, 0, 0, 0.25);
+}
+
+.faixa-conteudo::before {
+    content: "";
+
+    position: absolute;
+    width: 280px;
+    height: 280px;
+
+    right: -100px;
+    bottom: -180px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 200, 87, 0.08);
+
+    pointer-events: none;
+}
+
+
+/* MARCA */
+
+.faixa-marca {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    padding-right: 30px;
+
+    border-right: 1px solid rgba(255,255,255,0.15);
+}
+
+.faixa-marca span {
+    color: #ffc857;
+
+    font-size: 24px;
+    font-weight: 900;
+
+    line-height: 1;
+}
+
+.faixa-marca small {
+    margin-top: 8px;
+
+    color: #e9cbdc;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 3px;
+}
+
+
+/* TEXTO */
+
+.faixa-texto {
+    position: relative;
+    z-index: 1;
+}
+
+.faixa-destaque {
+    display: block;
+
+    margin-bottom: 1px;
+
+    color: #fffafd;
+
+    font-size: clamp(25px, 3vw, 38px);
+    font-weight: 800;
+
+    line-height: 1.05;
+}
+
+.faixa-texto h1 {
+    color: #ffc857;
+
+    font-size: clamp(40px, 5vw, 62px);
+    font-weight: 900;
+
+    line-height: 1;
+
+    letter-spacing: -2px;
+}
+
+.faixa-texto p {
+    margin-top: 12px;
+
+    color: #e5cfdc;
+
+    font-size: 13px;
+}
+
+
+/* BOTÃO */
+
+.faixa-botao {
+    position: relative;
+    z-index: 1;
+
+    min-width: 145px;
+    min-height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 22px;
+
+    border-radius: 12px;
+
+    background: #ffc857;
+
+    color: #2b1022;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 900;
+
+    transition: 0.2s;
+}
+
+.faixa-botao:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(255, 200, 87, 0.18);
+}
+
+
+/* APROXIMA O CARDÁPIO DA FAIXA */
+
+#cardapio {
+    padding-top: 45px;
+}
+
+
+/* =====================================================
+   FAIXA - CELULAR
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .inicio-faixa {
+        padding:
+            22px 14px
+            5px;
+    }
+
+    .faixa-conteudo {
+        min-height: auto;
+
+        padding: 28px 22px;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 19px;
+
+        text-align: center;
+
+        border-radius: 20px;
+    }
+
+    .faixa-marca {
+        padding: 0 0 14px;
+
+        border-right: 0;
+        border-bottom:
+            1px solid rgba(255,255,255,0.14);
+    }
+
+    .faixa-marca span {
+        font-size: 20px;
+    }
+
+    .faixa-marca small {
+        margin-top: 6px;
+    }
+
+    .faixa-destaque {
+        font-size: 24px;
+    }
+
+    .faixa-texto h1 {
+        font-size: 43px;
+        letter-spacing: -1px;
+    }
+
+    .faixa-texto p {
+        max-width: 280px;
+
+        margin:
+            10px auto 0;
+
+        font-size: 12px;
+    }
+
+    .faixa-botao {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    #cardapio {
+        padding-top: 42px;
+    }
+
 }
