@@ -1,281 +1,142 @@
-// ==========================================
-// KE AÇAÍ - SITE DELIVERY
-// ==========================================
+// ======================================
+// KE AÇAÍ - DELIVERY
+// ======================================
 
-const SUPABASE_URL = "https://ncukfroazgjnwvrmzxyu.supabase.co";
-const SUPABASE_KEY = "sb_publishable_T9oyWTb31mxJybxM09Z81A_AoXqfdig";
+const SUPABASE_URL =
+    "https://ncukfroazgjnwvrmzxyu.supabase.co";
 
-const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-);
+const SUPABASE_KEY =
+    "sb_publishable_T9oyWTb31mxJybxM09Z81A_AoXqfdig";
 
-// CONFIGURAÇÕES PADRÃO
-let whatsapp = "5516996211605";
-let taxaEntrega = 0;
-let lojaAberta = true;
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
 
-// DADOS
-let produtos = [];
-let tamanhos = [];
-let adicionais = [];
+const whatsapp = "5516996211605";
 
 let carrinho = [];
+let adicionais = [];
+let adicionaisDisponiveis = [];
 
 let cupomAplicado = null;
 let valorDesconto = 0;
 
 
-// ==========================================
-// DINHEIRO
-// ==========================================
+// ======================================
+// FORMATA VALORES
+// ======================================
 
 function dinheiro(valor) {
 
-    return Number(valor || 0).toLocaleString(
-        "pt-BR",
-        {
-            style: "currency",
-            currency: "BRL"
-        }
-    );
-
+    return Number(valor || 0)
+        .toLocaleString(
+            "pt-BR",
+            {
+                style: "currency",
+                currency: "BRL"
+            }
+        );
 }
 
 
-// ==========================================
-// SEGURANÇA PARA TEXTOS
-// ==========================================
+// ======================================
+// PROTEÇÃO DE TEXTO
+// ======================================
 
-function escapar(texto) {
+function escaparHTML(texto) {
 
-    const div = document.createElement("div");
+    const div =
+        document.createElement("div");
 
-    div.textContent = texto ?? "";
+    div.textContent =
+        texto == null ? "" : String(texto);
 
     return div.innerHTML;
-
 }
 
 
-// ==========================================
-// ÍCONES DOS PRODUTOS
-// ==========================================
-
-function iconeProduto(nome) {
-
-    const n = String(nome || "").toLowerCase();
-
-    if (n.includes("nutella")) {
-        return "🍫";
-    }
-
-    if (n.includes("ninho")) {
-        return "🥛";
-    }
-
-    if (n.includes("paçoca") || n.includes("pacoca")) {
-        return "🥜";
-    }
-
-    if (n.includes("tradicional")) {
-        return "🍓";
-    }
-
-    return "🍇";
-
-}
-
-
-// ==========================================
-// CARREGAR CONFIGURAÇÕES
-// ==========================================
-
-async function carregarConfiguracoes() {
-
-    try {
-
-        const { data, error } = await supabaseClient
-            .from("Configuracoes")
-            .select("*")
-            .limit(1)
-            .maybeSingle();
-
-        if (error) {
-            console.log(
-                "Configuração pública não disponível. Usando padrão.",
-                error
-            );
-
-            return;
-        }
-
-        if (!data) {
-            return;
-        }
-
-        if (data.whatsapp) {
-            whatsapp = String(data.whatsapp).replace(/\D/g, "");
-        }
-
-        taxaEntrega = Number(data.taxa_entrega || 0);
-
-        lojaAberta = data.loja_aberta !== false;
-
-
-        const telefoneRodape =
-            document.getElementById("telefone-rodape");
-
-        if (telefoneRodape && data.whatsapp) {
-
-            telefoneRodape.textContent =
-                "Delivery • " + formatarTelefone(data.whatsapp);
-
-        }
-
-
-        const avisoTaxa =
-            document.getElementById("aviso-taxa-entrega");
-
-        if (avisoTaxa) {
-
-            if (taxaEntrega > 0) {
-
-                avisoTaxa.textContent =
-                    "🛵 Taxa de entrega: " +
-                    dinheiro(taxaEntrega);
-
-            } else {
-
-                avisoTaxa.textContent =
-                    "🛵 Taxa de entrega a confirmar de acordo com o endereço.";
-
-            }
-
-        }
-
-
-        if (!lojaAberta) {
-
-            const aviso =
-                document.getElementById("aviso-loja");
-
-            aviso.style.display = "block";
-
-            aviso.textContent =
-                data.mensagem_fechado ||
-                "No momento estamos fechados. 💜";
-
-        }
-
-    } catch (erro) {
-
-        console.error(erro);
-
-    }
-
-}
-
-
-function formatarTelefone(numero) {
-
-    const numeros =
-        String(numero || "").replace(/\D/g, "");
-
-    let n = numeros;
-
-    if (n.startsWith("55")) {
-        n = n.substring(2);
-    }
-
-    if (n.length === 11) {
-
-        return "(" +
-            n.substring(0, 2) +
-            ") " +
-            n.substring(2, 7) +
-            "-" +
-            n.substring(7);
-
-    }
-
-    return numero;
-
-}
-
-
-// ==========================================
+// ======================================
 // CARREGAR CARDÁPIO
-// ==========================================
+// ======================================
 
 async function carregarCardapio() {
 
-    const listaProdutos =
-        document.getElementById("lista-produtos");
-
-    const listaAdicionais =
-        document.getElementById("lista-adicionais");
-
     try {
 
-        const resultadoProdutos =
-            await supabaseClient
+        const [
+            respostaProdutos,
+            respostaTamanhos,
+            respostaAdicionais
+        ] = await Promise.all([
+
+            supabaseClient
                 .from("Produtos")
                 .select("*")
                 .eq("ativo", true)
-                .order("ordem", {
-                    ascending: true
-                });
+                .order(
+                    "ordem",
+                    { ascending: true }
+                ),
 
-
-        if (resultadoProdutos.error) {
-            throw resultadoProdutos.error;
-        }
-
-
-        const resultadoTamanhos =
-            await supabaseClient
+            supabaseClient
                 .from("Tamanhos")
                 .select("*")
                 .eq("ativo", true)
-                .order("ordem", {
-                    ascending: true
-                });
+                .order(
+                    "ordem",
+                    { ascending: true }
+                ),
 
-
-        if (resultadoTamanhos.error) {
-            throw resultadoTamanhos.error;
-        }
-
-
-        const resultadoAdicionais =
-            await supabaseClient
+            supabaseClient
                 .from("Adicionais")
                 .select("*")
                 .eq("ativo", true)
-                .order("ordem", {
-                    ascending: true
-                });
+                .order(
+                    "ordem",
+                    { ascending: true }
+                )
 
+        ]);
 
-        if (resultadoAdicionais.error) {
-            throw resultadoAdicionais.error;
+        if (respostaProdutos.error) {
+            throw respostaProdutos.error;
         }
 
+        if (respostaTamanhos.error) {
+            throw respostaTamanhos.error;
+        }
 
-        produtos =
-            resultadoProdutos.data || [];
+        if (respostaAdicionais.error) {
+            throw respostaAdicionais.error;
+        }
 
-        tamanhos =
-            resultadoTamanhos.data || [];
+        const produtos =
+            respostaProdutos.data || [];
 
-        adicionais =
-            resultadoAdicionais.data || [];
+        const tamanhos =
+            respostaTamanhos.data || [];
 
+        adicionaisDisponiveis =
+            respostaAdicionais.data || [];
 
-        renderizarProdutos();
+        montarProdutos(
+            produtos,
+            tamanhos,
+            adicionaisDisponiveis
+        );
 
-        renderizarMonte();
+        montarAdicionais(
+            adicionaisDisponiveis
+        );
+
+        montarTamanhosMonte(
+            produtos,
+            tamanhos
+        );
+
+        calcularMontagem();
 
     } catch (erro) {
 
@@ -283,601 +144,1175 @@ async function carregarCardapio() {
             "Erro ao carregar cardápio:",
             erro
         );
-
-        listaProdutos.innerHTML =
-            '<div class="carregando">' +
-            'Não foi possível carregar o cardápio. 💜' +
-            '</div>';
-
-        listaAdicionais.innerHTML =
-            '<div class="carregando">' +
-            'Não foi possível carregar os adicionais.' +
-            '</div>';
-
     }
-
 }
 
 
-// ==========================================
-// MOSTRAR PRODUTOS
-// ==========================================
+// ======================================
+// PRODUTOS DO CARDÁPIO
+// ======================================
 
-function renderizarProdutos() {
-
-    const lista =
-        document.getElementById("lista-produtos");
-
-
-    if (!produtos.length) {
-
-        lista.innerHTML =
-            '<div class="carregando">' +
-            'Nenhum produto disponível no momento.' +
-            '</div>';
-
-        return;
-
-    }
-
-
-    lista.innerHTML = "";
-
-
-    produtos.forEach(function(produto) {
-
-        const tamanhosProduto =
-            tamanhos.filter(function(tamanho) {
-
-                return Number(tamanho.produto_id) ===
-                    Number(produto.id);
-
-            });
-
-
-        if (!tamanhosProduto.length) {
-            return;
-        }
-
-
-        const opcoes =
-            tamanhosProduto.map(function(tamanho) {
-
-                return `
-                    <option value="${tamanho.id}">
-                        ${escapar(tamanho.tamanho)}
-                        — ${dinheiro(tamanho.preco)}
-                    </option>
-                `;
-
-            }).join("");
-
-
-        const card =
-            document.createElement("div");
-
-        card.className = "produto";
-
-        card.innerHTML = `
-
-            <div class="icone-produto">
-                ${iconeProduto(produto.nome)}
-            </div>
-
-            <h3>
-                ${escapar(produto.nome)}
-            </h3>
-
-            <p>
-                ${escapar(produto.descricao || "")}
-            </p>
-
-            <select class="tamanho-produto">
-                ${opcoes}
-            </select>
-
-            <button
-                type="button"
-                class="adicionar-produto"
-            >
-                Adicionar ao carrinho 🛒
-            </button>
-
-        `;
-
-
-        const botao =
-            card.querySelector(
-                ".adicionar-produto"
-            );
-
-
-        botao.addEventListener(
-            "click",
-            function() {
-
-                adicionarProdutoPronto(
-                    produto,
-                    card
-                );
-
-            }
-        );
-
-
-        lista.appendChild(card);
-
-    });
-
-}
-
-
-// ==========================================
-// ADICIONAR PRODUTO PRONTO
-// ==========================================
-
-function adicionarProdutoPronto(
-    produto,
-    card
+function montarProdutos(
+    produtos,
+    tamanhos,
+    adicionaisBanco
 ) {
 
-    const select =
-        card.querySelector(
-            ".tamanho-produto"
+    const areaProdutos =
+        document.querySelector(
+            ".produtos"
         );
 
-
-    const tamanhoId =
-        Number(select.value);
-
-
-    const tamanho =
-        tamanhos.find(function(item) {
-
-            return Number(item.id) ===
-                tamanhoId;
-
-        });
-
-
-    if (!tamanho) {
-
-        alert(
-            "Escolha um tamanho."
-        );
-
+    if (!areaProdutos) {
         return;
-
     }
 
+    areaProdutos.innerHTML = "";
 
-    carrinho.push({
+    produtos.forEach(
+        function(produto) {
 
-        nome: produto.nome,
+            /*
+             * Se o produto tiver "Monte" no nome,
+             * ele NÃO aparece nos cards.
+             *
+             * Mas continua no banco para fornecer
+             * os tamanhos/preços ao Monte seu Ke.
+             */
+            const nomeProduto =
+                String(
+                    produto.nome || ""
+                ).toLowerCase();
 
-        tamanho: tamanho.tamanho,
-
-        adicionais: [],
-
-        preco: Number(tamanho.preco || 0),
-
-        custo: Number(tamanho.custo || 0)
-
-    });
-
-
-    limparCupom();
-
-    atualizarCarrinho();
-
-
-    alert(
-        produto.nome +
-        " adicionado ao carrinho! 💜"
-    );
-
-}
-
-
-// ==========================================
-// MONTE SEU KE
-// ==========================================
-
-function renderizarMonte() {
-
-    const select =
-        document.getElementById(
-            "tamanho-monte"
-        );
-
-
-    const lista =
-        document.getElementById(
-            "lista-adicionais"
-        );
-
-
-    // Usa os tamanhos do Ke Tradicional
-    // como base do Monte seu Ke.
-
-    let produtoBase =
-        produtos.find(function(produto) {
-
-            return String(produto.nome)
-                .toLowerCase()
-                .includes("tradicional");
-
-        });
-
-
-    if (!produtoBase && produtos.length) {
-        produtoBase = produtos[0];
-    }
-
-
-    let tamanhosMonte = [];
-
-
-    if (produtoBase) {
-
-        tamanhosMonte =
-            tamanhos.filter(function(tamanho) {
-
-                return Number(tamanho.produto_id) ===
-                    Number(produtoBase.id);
-
-            });
-
-    }
-
-
-    if (!tamanhosMonte.length) {
-
-        select.innerHTML =
-            '<option value="">' +
-            'Nenhum tamanho disponível' +
-            '</option>';
-
-    } else {
-
-        select.innerHTML =
-            tamanhosMonte
-                .map(function(tamanho) {
-
-                    return `
-                        <option value="${tamanho.id}">
-                            ${escapar(tamanho.tamanho)}
-                            — ${dinheiro(tamanho.preco)}
-                        </option>
-                    `;
-
-                })
-                .join("");
-
-    }
-
-
-    if (!adicionais.length) {
-
-        lista.innerHTML =
-            '<div class="carregando">' +
-            'Nenhum adicional disponível.' +
-            '</div>';
-
-    } else {
-
-        lista.innerHTML = "";
-
-
-        adicionais.forEach(
-            function(adicional) {
-
-                const label =
-                    document.createElement(
-                        "label"
-                    );
-
-                label.className =
-                    "adicional";
-
-
-                label.innerHTML = `
-
-                    <span>
-
-                        <input
-                            type="checkbox"
-                            class="check-adicional"
-                            value="${adicional.id}"
-                        >
-
-                        ${escapar(adicional.nome)}
-
-                    </span>
-
-                    <strong>
-                        + ${dinheiro(adicional.preco)}
-                    </strong>
-
-                `;
-
-
-                lista.appendChild(label);
-
+            if (
+                nomeProduto.includes("monte")
+            ) {
+                return;
             }
-        );
 
-    }
+            const tamanhosProduto =
+                tamanhos.filter(
+                    function(tamanho) {
 
-
-    select.onchange =
-        calcularMontagem;
-
-
-    document
-        .querySelectorAll(
-            ".check-adicional"
-        )
-        .forEach(function(check) {
-
-            check.addEventListener(
-                "change",
-                calcularMontagem
-            );
-
-        });
-
-
-    calcularMontagem();
-
-}
-
-
-// ==========================================
-// CALCULAR MONTE SEU KE
-// ==========================================
-
-function calcularMontagem() {
-
-    const select =
-        document.getElementById(
-            "tamanho-monte"
-        );
-
-
-    const tamanho =
-        tamanhos.find(function(item) {
-
-            return Number(item.id) ===
-                Number(select.value);
-
-        });
-
-
-    let total =
-        tamanho ?
-            Number(tamanho.preco || 0)
-            :
-            0;
-
-
-    document
-        .querySelectorAll(
-            ".check-adicional:checked"
-        )
-        .forEach(function(check) {
-
-            const adicional =
-                adicionais.find(
-                    function(item) {
-
-                        return Number(item.id) ===
-                            Number(check.value);
-
+                        return (
+                            Number(
+                                tamanho.produto_id
+                            ) ===
+                            Number(
+                                produto.id
+                            )
+                        );
                     }
                 );
 
-
-            if (adicional) {
-
-                total +=
-                    Number(
-                        adicional.preco || 0
-                    );
-
+            if (
+                tamanhosProduto.length === 0
+            ) {
+                return;
             }
 
-        });
+            const artigo =
+                document.createElement(
+                    "article"
+                );
 
+            artigo.className =
+                "produto";
 
-    document.getElementById(
-        "total-montagem"
-    ).textContent =
-        dinheiro(total);
+            artigo.dataset.produtoId =
+                produto.id;
 
+            const opcoes =
+                tamanhosProduto
+                    .map(
+                        function(tamanho) {
+
+                            return `
+                                <option
+                                    value="${Number(tamanho.preco)}"
+                                    data-tamanho="${escaparHTML(tamanho.tamanho)}"
+                                >
+                                    ${escaparHTML(tamanho.tamanho)}
+                                    —
+                                    ${dinheiro(tamanho.preco)}
+                                </option>
+                            `;
+                        }
+                    )
+                    .join("");
+
+            const opcoesAdicionais =
+                adicionaisBanco
+                    .map(
+                        function(adicional) {
+
+                            return `
+                                <label class="adicional adicional-produto">
+
+                                    <span>
+
+                                        <input
+                                            type="checkbox"
+                                            class="checkbox-adicional-produto"
+                                            data-nome="${escaparHTML(adicional.nome)}"
+                                            value="${Number(adicional.preco)}"
+                                        >
+
+                                        ${escaparHTML(adicional.nome)}
+
+                                    </span>
+
+                                    <strong>
+                                        + ${dinheiro(adicional.preco)}
+                                    </strong>
+
+                                </label>
+                            `;
+                        }
+                    )
+                    .join("");
+
+            let fotoProduto = "";
+
+            if (
+                produto.imagem &&
+                String(produto.imagem).trim() !== ""
+            ) {
+
+                fotoProduto = `
+
+                    <div class="foto-produto-container">
+
+                        <img
+                            src="${escaparHTML(produto.imagem)}"
+                            alt="${escaparHTML(produto.nome)}"
+                            class="foto-produto"
+                            loading="lazy"
+                        >
+
+                    </div>
+
+                `;
+
+            } else {
+
+                fotoProduto = `
+
+                    <div class="icone-produto">
+                        💜
+                    </div>
+
+                `;
+            }
+
+            artigo.innerHTML = `
+
+                ${fotoProduto}
+
+                <div class="conteudo-produto">
+
+                    <h3>
+                        ${escaparHTML(produto.nome)}
+                    </h3>
+
+                    <p>
+                        ${escaparHTML(produto.descricao || "")}
+                    </p>
+
+                    <select class="tamanho-produto">
+                        ${opcoes}
+                    </select>
+
+                    <div class="adicionais-produto-container">
+
+                        <button
+                            type="button"
+                            class="abrir-adicionais-produto"
+                        >
+                            + Escolher adicionais
+                        </button>
+
+                        <div
+                            class="lista-adicionais-produto"
+                            style="display:none;"
+                        >
+
+                            ${opcoesAdicionais}
+
+                        </div>
+
+                    </div>
+
+                    <div class="total-produto">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong class="valor-produto">
+                            ${dinheiro(tamanhosProduto[0].preco)}
+                        </strong>
+
+                    </div>
+
+                    <button
+                        class="adicionar-produto"
+                    >
+                        Adicionar ao carrinho 🛒
+                    </button>
+
+                </div>
+
+            `;
+
+            areaProdutos.appendChild(
+                artigo
+            );
+        }
+    );
+
+    ativarProdutos();
 }
 
 
-// ==========================================
-// ADICIONAR MONTE SEU KE
-// ==========================================
+// ======================================
+// ATIVAR PRODUTOS
+// ======================================
 
-document
-    .getElementById("adicionar-montado")
-    .addEventListener(
+function ativarProdutos() {
+
+    document
+        .querySelectorAll(".produto")
+        .forEach(
+            function(produto) {
+
+                const select =
+                    produto.querySelector(
+                        ".tamanho-produto"
+                    );
+
+                const botaoAdicionais =
+                    produto.querySelector(
+                        ".abrir-adicionais-produto"
+                    );
+
+                const lista =
+                    produto.querySelector(
+                        ".lista-adicionais-produto"
+                    );
+
+                const checkboxes =
+                    produto.querySelectorAll(
+                        ".checkbox-adicional-produto"
+                    );
+
+                const botaoAdicionar =
+                    produto.querySelector(
+                        ".adicionar-produto"
+                    );
+
+                if (select) {
+
+                    select.addEventListener(
+                        "change",
+                        function() {
+
+                            calcularTotalProduto(
+                                produto
+                            );
+                        }
+                    );
+                }
+
+                if (
+                    botaoAdicionais &&
+                    lista
+                ) {
+
+                    botaoAdicionais.addEventListener(
+                        "click",
+                        function() {
+
+                            const aberto =
+                                lista.style.display !==
+                                "none";
+
+                            lista.style.display =
+                                aberto
+                                    ? "none"
+                                    : "grid";
+
+                            botaoAdicionais.textContent =
+                                aberto
+                                    ? "+ Escolher adicionais"
+                                    : "− Fechar adicionais";
+                        }
+                    );
+                }
+
+                checkboxes.forEach(
+                    function(checkbox) {
+
+                        checkbox.addEventListener(
+                            "change",
+                            function() {
+
+                                calcularTotalProduto(
+                                    produto
+                                );
+                            }
+                        );
+                    }
+                );
+
+                if (botaoAdicionar) {
+
+                    botaoAdicionar.addEventListener(
+                        "click",
+                        function() {
+
+                            adicionarProdutoAoCarrinho(
+                                produto
+                            );
+                        }
+                    );
+                }
+
+                calcularTotalProduto(
+                    produto
+                );
+            }
+        );
+}
+
+
+// ======================================
+// CALCULAR TOTAL DO PRODUTO
+// ======================================
+
+function calcularTotalProduto(produto) {
+
+    const select =
+        produto.querySelector(
+            ".tamanho-produto"
+        );
+
+    const valorElemento =
+        produto.querySelector(
+            ".valor-produto"
+        );
+
+    if (
+        !select ||
+        select.options.length === 0
+    ) {
+        return 0;
+    }
+
+    let total =
+        Number(
+            select.value
+        ) || 0;
+
+    const marcados =
+        produto.querySelectorAll(
+            ".checkbox-adicional-produto:checked"
+        );
+
+    marcados.forEach(
+        function(adicional) {
+
+            total +=
+                Number(
+                    adicional.value
+                ) || 0;
+        }
+    );
+
+    if (valorElemento) {
+
+        valorElemento.textContent =
+            dinheiro(total);
+    }
+
+    return total;
+}
+
+
+// ======================================
+// ADICIONAR PRODUTO AO CARRINHO
+// ======================================
+
+function adicionarProdutoAoCarrinho(
+    produto
+) {
+
+    const titulo =
+        produto.querySelector(
+            "h3"
+        );
+
+    const select =
+        produto.querySelector(
+            ".tamanho-produto"
+        );
+
+    if (
+        !titulo ||
+        !select ||
+        select.options.length === 0
+    ) {
+        return;
+    }
+
+    const opcao =
+        select.options[
+            select.selectedIndex
+        ];
+
+    const nome =
+        titulo.innerText.trim();
+
+    const tamanho =
+        opcao.dataset.tamanho;
+
+    const listaAdicionais = [];
+
+    produto
+        .querySelectorAll(
+            ".checkbox-adicional-produto:checked"
+        )
+        .forEach(
+            function(adicional) {
+
+                listaAdicionais.push({
+
+                    nome:
+                        adicional.dataset.nome,
+
+                    preco:
+                        Number(
+                            adicional.value
+                        ) || 0
+                });
+            }
+        );
+
+    const preco =
+        calcularTotalProduto(
+            produto
+        );
+
+    carrinho.push({
+
+        nome:
+            nome,
+
+        tamanho:
+            tamanho,
+
+        adicionais:
+            listaAdicionais,
+
+        preco:
+            preco
+    });
+
+    recalcularCupom();
+
+    atualizarCarrinho();
+
+    alert(
+        nome +
+        " adicionado ao carrinho! 💜"
+    );
+
+    produto
+        .querySelectorAll(
+            ".checkbox-adicional-produto"
+        )
+        .forEach(
+            function(adicional) {
+
+                adicional.checked =
+                    false;
+            }
+        );
+
+    calcularTotalProduto(
+        produto
+    );
+}
+
+
+// ======================================
+// ADICIONAIS DO MONTE SEU KE
+// ======================================
+
+function montarAdicionais(
+    adicionaisBanco
+) {
+
+    const area =
+        document.querySelector(
+            ".lista-adicionais"
+        );
+
+    if (!area) {
+        return;
+    }
+
+    area.innerHTML = "";
+
+    adicionaisBanco.forEach(
+        function(adicional) {
+
+            const label =
+                document.createElement(
+                    "label"
+                );
+
+            label.className =
+                "adicional";
+
+            label.innerHTML = `
+
+                <span>
+
+                    <input
+                        type="checkbox"
+                        class="checkbox-adicional"
+                        data-nome="${escaparHTML(adicional.nome)}"
+                        value="${Number(adicional.preco)}"
+                    >
+
+                    ${escaparHTML(adicional.nome)}
+
+                </span>
+
+                <strong>
+                    + ${dinheiro(adicional.preco)}
+                </strong>
+
+            `;
+
+            area.appendChild(
+                label
+            );
+        }
+    );
+
+    adicionais =
+        Array.from(
+            document.querySelectorAll(
+                ".checkbox-adicional"
+            )
+        );
+
+    adicionais.forEach(
+        function(adicional) {
+
+            adicional.addEventListener(
+                "change",
+                calcularMontagem
+            );
+        }
+    );
+}
+
+
+// ======================================
+// TAMANHOS DO MONTE SEU KE
+// ======================================
+
+function montarTamanhosMonte(
+    produtos,
+    tamanhos
+) {
+
+    const tamanhoMonte =
+        document.getElementById(
+            "tamanho-monte"
+        );
+
+    if (!tamanhoMonte) {
+        return;
+    }
+
+    const produtoMonte =
+        produtos.find(
+            function(produto) {
+
+                const nome =
+                    String(
+                        produto.nome || ""
+                    )
+                    .toLowerCase();
+
+                return (
+                    nome.includes("monte")
+                );
+            }
+        );
+
+    let tamanhosMonte = [];
+
+    if (produtoMonte) {
+
+        tamanhosMonte =
+            tamanhos.filter(
+                function(tamanho) {
+
+                    return (
+                        Number(
+                            tamanho.produto_id
+                        ) ===
+                        Number(
+                            produtoMonte.id
+                        )
+                    );
+                }
+            );
+    }
+
+    if (
+        tamanhosMonte.length === 0
+    ) {
+
+        const mapa =
+            new Map();
+
+        tamanhos.forEach(
+            function(tamanho) {
+
+                const chave =
+                    String(
+                        tamanho.tamanho
+                    );
+
+                if (
+                    !mapa.has(chave)
+                ) {
+
+                    mapa.set(
+                        chave,
+                        tamanho
+                    );
+                }
+            }
+        );
+
+        tamanhosMonte =
+            Array.from(
+                mapa.values()
+            );
+    }
+
+    tamanhoMonte.innerHTML = "";
+
+    tamanhosMonte.forEach(
+        function(tamanho) {
+
+            const opcao =
+                document.createElement(
+                    "option"
+                );
+
+            opcao.value =
+                Number(
+                    tamanho.preco
+                );
+
+            opcao.dataset.tamanho =
+                tamanho.tamanho;
+
+            opcao.textContent =
+                tamanho.tamanho +
+                " — " +
+                dinheiro(
+                    tamanho.preco
+                );
+
+            tamanhoMonte.appendChild(
+                opcao
+            );
+        }
+    );
+
+    tamanhoMonte.onchange =
+        calcularMontagem;
+}
+
+
+// ======================================
+// CALCULAR MONTE SEU KE
+// ======================================
+
+function calcularMontagem() {
+
+    const tamanhoMonte =
+        document.getElementById(
+            "tamanho-monte"
+        );
+
+    const totalMontagem =
+        document.getElementById(
+            "total-montagem"
+        );
+
+    if (
+        !tamanhoMonte ||
+        !totalMontagem ||
+        tamanhoMonte.options.length === 0
+    ) {
+
+        return 0;
+    }
+
+    let total =
+        Number(
+            tamanhoMonte.value
+        ) || 0;
+
+    adicionais.forEach(
+        function(adicional) {
+
+            if (
+                adicional.checked
+            ) {
+
+                total +=
+                    Number(
+                        adicional.value
+                    ) || 0;
+            }
+        }
+    );
+
+    totalMontagem.innerText =
+        dinheiro(total);
+
+    return total;
+}
+
+
+// ======================================
+// ADICIONAR MONTE SEU KE
+// ======================================
+
+const botaoMontado =
+    document.getElementById(
+        "adicionar-montado"
+    );
+
+if (botaoMontado) {
+
+    botaoMontado.addEventListener(
         "click",
         function() {
 
-            const select =
+            const tamanhoMonte =
                 document.getElementById(
                     "tamanho-monte"
                 );
 
-
-            const tamanho =
-                tamanhos.find(
-                    function(item) {
-
-                        return Number(item.id) ===
-                            Number(select.value);
-
-                    }
-                );
-
-
-            if (!tamanho) {
+            if (
+                !tamanhoMonte ||
+                tamanhoMonte.options.length === 0
+            ) {
 
                 alert(
-                    "Escolha um tamanho."
+                    "Escolha um tamanho. 💜"
                 );
 
                 return;
-
             }
 
+            const opcao =
+                tamanhoMonte.options[
+                    tamanhoMonte.selectedIndex
+                ];
 
-            const escolhidos = [];
+            const tamanho =
+                opcao.dataset.tamanho;
 
-            let preco =
-                Number(
-                    tamanho.preco || 0
-                );
+            const total =
+                calcularMontagem();
 
-            let custo =
-                Number(
-                    tamanho.custo || 0
-                );
+            const listaAdicionais = [];
 
+            adicionais.forEach(
+                function(adicional) {
 
-            document
-                .querySelectorAll(
-                    ".check-adicional:checked"
-                )
-                .forEach(
-                    function(check) {
+                    if (
+                        adicional.checked
+                    ) {
 
-                        const adicional =
-                            adicionais.find(
-                                function(item) {
+                        listaAdicionais.push({
 
-                                    return Number(item.id) ===
-                                        Number(check.value);
+                            nome:
+                                adicional
+                                    .dataset
+                                    .nome,
 
-                                }
-                            );
-
-
-                        if (adicional) {
-
-                            escolhidos.push({
-
-                                nome:
-                                    adicional.nome,
-
-                                preco:
-                                    Number(
-                                        adicional.preco || 0
-                                    )
-
-                            });
-
-
-                            preco +=
+                            preco:
                                 Number(
-                                    adicional.preco || 0
-                                );
-
-
-                            custo +=
-                                Number(
-                                    adicional.custo || 0
-                                );
-
-                        }
-
+                                    adicional.value
+                                )
+                        });
                     }
-                );
-
+                }
+            );
 
             carrinho.push({
 
-                nome: "Monte seu Ke",
+                nome:
+                    "Monte seu Ke",
 
                 tamanho:
-                    tamanho.tamanho,
+                    tamanho,
 
                 adicionais:
-                    escolhidos,
+                    listaAdicionais,
 
-                preco: preco,
-
-                custo: custo
-
+                preco:
+                    total
             });
 
-
-            document
-                .querySelectorAll(
-                    ".check-adicional"
-                )
-                .forEach(
-                    function(check) {
-
-                        check.checked = false;
-
-                    }
-                );
-
-
-            limparCupom();
-
-            calcularMontagem();
+            recalcularCupom();
 
             atualizarCarrinho();
-
 
             alert(
                 "Seu Ke foi adicionado ao carrinho! 💜"
             );
 
+            adicionais.forEach(
+                function(adicional) {
+
+                    adicional.checked =
+                        false;
+                }
+            );
+
+            calcularMontagem();
         }
     );
+}
 
 
-// ==========================================
+// ======================================
+// TOTAL BRUTO
+// ======================================
+
+function totalCarrinho() {
+
+    return carrinho.reduce(
+        function(soma, item) {
+
+            return (
+                soma +
+                Number(
+                    item.preco || 0
+                )
+            );
+        },
+        0
+    );
+}
+
+
+// ======================================
+// CUPOM
+// ======================================
+
+async function validarCupom() {
+
+    const campo =
+        document.getElementById(
+            "codigo-cupom"
+        );
+
+    const mensagem =
+        document.getElementById(
+            "mensagem-cupom"
+        );
+
+    if (
+        !campo ||
+        !mensagem
+    ) {
+        return;
+    }
+
+    const codigo =
+        campo.value
+            .trim()
+            .toUpperCase();
+
+    if (!codigo) {
+
+        mensagem.textContent =
+            "Digite um cupom.";
+
+        return;
+    }
+
+    const total =
+        totalCarrinho();
+
+    if (
+        total <= 0
+    ) {
+
+        mensagem.textContent =
+            "Adicione produtos ao carrinho primeiro.";
+
+        return;
+    }
+
+    mensagem.textContent =
+        "Validando cupom...";
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.rpc(
+                "validar_cupom",
+                {
+                    p_codigo:
+                        codigo,
+
+                    p_total:
+                        total
+                }
+            );
+
+        if (error) {
+
+            console.error(
+                "Erro ao validar cupom:",
+                error
+            );
+
+            mensagem.textContent =
+                "Não foi possível validar o cupom.";
+
+            return;
+        }
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            cupomAplicado =
+                null;
+
+            valorDesconto =
+                0;
+
+            mensagem.textContent =
+                "Cupom inválido ou não disponível.";
+
+            atualizarCarrinho();
+
+            return;
+        }
+
+        cupomAplicado =
+            data[0];
+
+        recalcularCupom();
+
+        mensagem.textContent =
+            "Cupom aplicado com sucesso! 💜";
+
+        atualizarCarrinho();
+
+    } catch (erro) {
+
+        console.error(
+            "Erro no cupom:",
+            erro
+        );
+
+        mensagem.textContent =
+            "Não foi possível validar o cupom.";
+    }
+}
+
+
+// ======================================
+// RECALCULAR CUPOM
+// ======================================
+
+function recalcularCupom() {
+
+    const total =
+        totalCarrinho();
+
+    if (
+        !cupomAplicado ||
+        total <= 0
+    ) {
+
+        valorDesconto = 0;
+
+        atualizarExibicaoCupom();
+
+        return;
+    }
+
+    if (
+        cupomAplicado.tipo ===
+        "percentual"
+    ) {
+
+        valorDesconto =
+            total *
+            (
+                Number(
+                    cupomAplicado.valor
+                ) / 100
+            );
+
+    } else {
+
+        valorDesconto =
+            Number(
+                cupomAplicado.valor
+            ) || 0;
+    }
+
+    if (
+        valorDesconto > total
+    ) {
+
+        valorDesconto =
+            total;
+    }
+
+    if (
+        valorDesconto < 0
+    ) {
+
+        valorDesconto = 0;
+    }
+
+    atualizarExibicaoCupom();
+}
+
+
+// ======================================
+// EXIBIR DESCONTO
+// ======================================
+
+function atualizarExibicaoCupom() {
+
+    const elemento =
+        document.getElementById(
+            "valor-desconto"
+        );
+
+    if (!elemento) {
+        return;
+    }
+
+    if (
+        valorDesconto > 0
+    ) {
+
+        elemento.textContent =
+            "-" +
+            dinheiro(
+                valorDesconto
+            );
+
+    } else {
+
+        elemento.textContent =
+            dinheiro(0);
+    }
+}
+
+
+const botaoCupom =
+    document.getElementById(
+        "aplicar-cupom"
+    );
+
+if (botaoCupom) {
+
+    botaoCupom.addEventListener(
+        "click",
+        validarCupom
+    );
+}
+
+
+// ======================================
 // CARRINHO
-// ==========================================
+// ======================================
 
 function atualizarCarrinho() {
 
-    const lista =
+    const area =
         document.getElementById(
             "itens-carrinho"
         );
-
 
     const vazio =
         document.getElementById(
             "carrinho-vazio"
         );
 
+    const totalElemento =
+        document.getElementById(
+            "total-pedido"
+        );
 
-    lista.innerHTML = "";
+    if (
+        !area ||
+        !vazio ||
+        !totalElemento
+    ) {
+        return;
+    }
 
+    area.innerHTML = "";
 
-    if (!carrinho.length) {
+    const totalBruto =
+        totalCarrinho();
 
-        vazio.style.display = "block";
+    const totalFinal =
+        Math.max(
+            0,
+            totalBruto -
+            valorDesconto
+        );
+
+    if (
+        carrinho.length === 0
+    ) {
+
+        vazio.style.display =
+            "block";
 
     } else {
 
-        vazio.style.display = "none";
-
+        vazio.style.display =
+            "none";
     }
 
-
     carrinho.forEach(
-        function(item, indice) {
+        function(
+            item,
+            indice
+        ) {
 
             const div =
                 document.createElement(
@@ -887,57 +1322,55 @@ function atualizarCarrinho() {
             div.className =
                 "item-carrinho";
 
-
-            let adicionaisTexto = "";
-
+            let textoAdicionais =
+                "";
 
             if (
                 item.adicionais &&
-                item.adicionais.length
+                item.adicionais.length > 0
             ) {
 
-                adicionaisTexto =
-                    "<p>+ " +
+                textoAdicionais =
+                    "<p>Adicionais: " +
+
                     item.adicionais
-                        .map(function(adicional) {
+                        .map(
+                            function(adicional) {
 
-                            return escapar(
-                                adicional.nome
-                            );
-
-                        })
+                                return escaparHTML(
+                                    adicional.nome
+                                );
+                            }
+                        )
                         .join(", ") +
+
                     "</p>";
-
             }
-
 
             div.innerHTML = `
 
                 <div>
 
                     <h4>
-                        ${escapar(item.nome)}
+                        ${escaparHTML(item.nome)}
                     </h4>
 
                     <p>
-                        ${escapar(item.tamanho)}
+                        Tamanho:
+                        ${escaparHTML(item.tamanho)}
                     </p>
 
-                    ${adicionaisTexto}
+                    ${textoAdicionais}
 
                 </div>
-
 
                 <div class="preco-item">
 
                     ${dinheiro(item.preco)}
 
-                    <br>
-
                     <button
-                        type="button"
                         class="remover"
+                        onclick="removerItem(${indice})"
                     >
                         Remover
                     </button>
@@ -946,92 +1379,24 @@ function atualizarCarrinho() {
 
             `;
 
-
-            div
-                .querySelector(".remover")
-                .addEventListener(
-                    "click",
-                    function() {
-
-                        removerItem(indice);
-
-                    }
-                );
-
-
-            lista.appendChild(div);
-
+            area.appendChild(
+                div
+            );
         }
     );
 
-
-    const total =
-        calcularSubtotal();
-
-
-    if (
-        valorDesconto >
-        total
-    ) {
-
-        valorDesconto =
-            total;
-
-    }
-
-
-    document.getElementById(
-        "total-pedido"
-    ).textContent =
+    totalElemento.innerText =
         dinheiro(
-            Math.max(
-                0,
-                total - valorDesconto
-            )
+            totalFinal
         );
 
-
-    document.getElementById(
-        "valor-desconto"
-    ).textContent =
-        valorDesconto > 0
-            ?
-            "-" + dinheiro(valorDesconto)
-            :
-            dinheiro(0);
-
+    atualizarExibicaoCupom();
 }
 
 
-function calcularSubtotal() {
-
-    return carrinho.reduce(
-        function(soma, item) {
-
-            return soma +
-                Number(item.preco || 0);
-
-        },
-        0
-    );
-
-}
-
-
-function calcularCusto() {
-
-    return carrinho.reduce(
-        function(soma, item) {
-
-            return soma +
-                Number(item.custo || 0);
-
-        },
-        0
-    );
-
-}
-
+// ======================================
+// REMOVER ITEM
+// ======================================
 
 function removerItem(indice) {
 
@@ -1040,209 +1405,61 @@ function removerItem(indice) {
         1
     );
 
-
-    limparCupom();
-
-    atualizarCarrinho();
-
-}
-
-
-// ==========================================
-// CUPOM
-// ==========================================
-
-async function validarCupom() {
-
-    const campo =
-        document.getElementById(
-            "codigo-cupom"
-        );
-
-
-    const mensagem =
-        document.getElementById(
-            "mensagem-cupom"
-        );
-
-
-    const codigo =
-        campo.value
-            .trim()
-            .toUpperCase();
-
-
-    const total =
-        calcularSubtotal();
-
-
-    if (!codigo) {
-
-        mensagem.textContent =
-            "Digite um cupom.";
-
-        return;
-
-    }
-
-
-    if (total <= 0) {
-
-        mensagem.textContent =
-            "Adicione produtos ao carrinho primeiro.";
-
-        return;
-
-    }
-
-
-    mensagem.textContent =
-        "Verificando cupom...";
-
-
-    const { data, error } =
-        await supabaseClient.rpc(
-            "validar_cupom",
-            {
-                p_codigo: codigo,
-                p_total: total
-            }
-        );
-
-
-    if (error) {
-
-        console.error(error);
-
-        mensagem.textContent =
-            "Não foi possível validar o cupom.";
-
-        return;
-
-    }
-
-
     if (
-        !data ||
-        data.length === 0
+        carrinho.length === 0
     ) {
 
-        cupomAplicado = null;
-
-        valorDesconto = 0;
-
-
-        mensagem.textContent =
-            "Cupom inválido ou não disponível.";
-
-
-        atualizarCarrinho();
-
-        return;
-
-    }
-
-
-    const cupom =
-        data[0];
-
-
-    cupomAplicado =
-        cupom;
-
-
-    if (
-        cupom.tipo ===
-        "percentual"
-    ) {
+        cupomAplicado =
+            null;
 
         valorDesconto =
-            total *
-            (
-                Number(cupom.valor) /
-                100
+            0;
+
+        const mensagem =
+            document.getElementById(
+                "mensagem-cupom"
             );
+
+        if (mensagem) {
+
+            mensagem.textContent =
+                "";
+        }
 
     } else {
 
-        valorDesconto =
-            Number(cupom.valor);
-
+        recalcularCupom();
     }
-
-
-    valorDesconto =
-        Math.min(
-            valorDesconto,
-            total
-        );
-
-
-    mensagem.textContent =
-        "Cupom aplicado com sucesso! 💜";
-
 
     atualizarCarrinho();
-
 }
 
 
-function limparCupom() {
+// ======================================
+// PAGAMENTO
+// ======================================
 
-    cupomAplicado = null;
-
-    valorDesconto = 0;
-
-
-    const campo =
-        document.getElementById(
-            "codigo-cupom"
-        );
-
-
-    const mensagem =
-        document.getElementById(
-            "mensagem-cupom"
-        );
-
-
-    if (campo) {
-        campo.value = "";
-    }
-
-    if (mensagem) {
-        mensagem.textContent = "";
-    }
-
-}
-
-
-document
-    .getElementById("aplicar-cupom")
-    .addEventListener(
-        "click",
-        validarCupom
+const pagamento =
+    document.getElementById(
+        "pagamento"
     );
 
+const campoTroco =
+    document.getElementById(
+        "campo-troco"
+    );
 
-// ==========================================
-// PAGAMENTO
-// ==========================================
+if (
+    pagamento &&
+    campoTroco
+) {
 
-document
-    .getElementById("pagamento")
-    .addEventListener(
+    pagamento.addEventListener(
         "change",
         function() {
 
-            const campoTroco =
-                document.getElementById(
-                    "campo-troco"
-                );
-
-
             if (
-                this.value ===
+                pagamento.value ===
                 "Dinheiro"
             ) {
 
@@ -1253,302 +1470,167 @@ document
 
                 campoTroco.style.display =
                     "none";
-
-                document.getElementById(
-                    "troco"
-                ).value = "";
-
             }
-
         }
     );
-
-
-// ==========================================
-// REGISTRAR PEDIDO NO SUPABASE
-// ==========================================
-
-async function salvarPedido(dados) {
-
-    try {
-
-        const { error } =
-            await supabaseClient.rpc(
-                "criar_pedido",
-                {
-                    p_cliente:
-                        dados.cliente,
-
-                    p_telefone:
-                        dados.telefone,
-
-                    p_itens:
-                        dados.itens,
-
-                    p_valor_total:
-                        dados.valorTotal,
-
-                    p_custo:
-                        dados.custo,
-
-                    p_forma_pagamento:
-                        dados.formaPagamento,
-
-                    p_endereco:
-                        dados.endereco,
-
-                    p_taxa_entrega:
-                        dados.taxaEntrega,
-
-                    p_observacoes:
-                        dados.observacoes
-                }
-            );
-
-
-        if (error) {
-
-            console.error(
-                "Erro ao registrar pedido:",
-                error
-            );
-
-        }
-
-    } catch (erro) {
-
-        console.error(
-            "Erro ao registrar pedido:",
-            erro
-        );
-
-    }
-
 }
 
 
-// ==========================================
+// ======================================
 // FINALIZAR PEDIDO
-// ==========================================
+// ======================================
 
-document
-    .getElementById("finalizar")
-    .addEventListener(
+const botaoFinalizar =
+    document.getElementById(
+        "finalizar"
+    );
+
+if (botaoFinalizar) {
+
+    botaoFinalizar.addEventListener(
         "click",
         function() {
 
-            if (!lojaAberta) {
-
-                alert(
-                    "A Ke Açaí está fechada no momento. 💜"
-                );
-
-                return;
-
-            }
-
-
-            if (!carrinho.length) {
-
-                alert(
-                    "Seu carrinho está vazio."
-                );
-
-                return;
-
-            }
-
-
-            const nome =
-                document
-                    .getElementById("nome")
-                    .value
-                    .trim();
-
-
-            const telefone =
-                document
-                    .getElementById("telefone")
-                    .value
-                    .trim();
-
-
-            const rua =
-                document
-                    .getElementById("rua")
-                    .value
-                    .trim();
-
-
-            const numero =
-                document
-                    .getElementById("numero")
-                    .value
-                    .trim();
-
-
-            const bairro =
-                document
-                    .getElementById("bairro")
-                    .value
-                    .trim();
-
-
-            const complemento =
-                document
-                    .getElementById("complemento")
-                    .value
-                    .trim();
-
-
-            const formaPagamento =
-                document
-                    .getElementById("pagamento")
-                    .value;
-
-
-            const troco =
-                document
-                    .getElementById("troco")
-                    .value
-                    .trim();
-
-
-            const observacao =
-                document
-                    .getElementById("observacao")
-                    .value
-                    .trim();
-
-
             if (
-                !nome ||
-                !telefone ||
-                !rua ||
-                !numero ||
-                !bairro ||
-                !formaPagamento
+                carrinho.length === 0
             ) {
 
                 alert(
-                    "Preencha todos os campos obrigatórios."
+                    "Adicione pelo menos um açaí ao carrinho. 💜"
                 );
 
                 return;
-
             }
 
-
-            const subtotal =
-                calcularSubtotal();
-
-
-            const totalProdutos =
-                Math.max(
-                    0,
-                    subtotal -
-                    valorDesconto
+            const campoNome =
+                document.getElementById(
+                    "nome"
                 );
 
-
-            const totalFinal =
-                totalProdutos +
-                taxaEntrega;
-
-
-            const custo =
-                calcularCusto();
-
-
-            const enderecoCompleto =
-                rua +
-                ", " +
-                numero +
-                " - " +
-                bairro +
-                (
-                    complemento
-                        ?
-                        " - " + complemento
-                        :
-                        ""
+            const campoTelefone =
+                document.getElementById(
+                    "telefone"
                 );
 
+            const campoRua =
+                document.getElementById(
+                    "rua"
+                );
 
-            // TEXTO DOS ITENS PARA O PAINEL
+            const campoNumero =
+                document.getElementById(
+                    "numero"
+                );
 
-            const itensPedido =
-                carrinho
-                    .map(
-                        function(item, indice) {
+            const campoBairro =
+                document.getElementById(
+                    "bairro"
+                );
 
-                            let texto =
-                                (indice + 1) +
-                                ". " +
-                                item.nome +
-                                " - " +
-                                item.tamanho;
+            const campoComplemento =
+                document.getElementById(
+                    "complemento"
+                );
 
+            const campoTrocoInput =
+                document.getElementById(
+                    "troco"
+                );
 
-                            if (
-                                item.adicionais &&
-                                item.adicionais.length
-                            ) {
+            const campoObservacao =
+                document.getElementById(
+                    "observacao"
+                );
 
-                                texto +=
-                                    " + " +
-                                    item.adicionais
-                                        .map(
-                                            function(adicional) {
+            const nome =
+                campoNome
+                    ? campoNome.value.trim()
+                    : "";
 
-                                                return adicional.nome;
+            const telefone =
+                campoTelefone
+                    ? campoTelefone.value.trim()
+                    : "";
 
-                                            }
-                                        )
-                                        .join(", ");
+            const rua =
+                campoRua
+                    ? campoRua.value.trim()
+                    : "";
 
-                            }
+            const numero =
+                campoNumero
+                    ? campoNumero.value.trim()
+                    : "";
 
+            const bairro =
+                campoBairro
+                    ? campoBairro.value.trim()
+                    : "";
 
-                            texto +=
-                                " (" +
-                                dinheiro(item.preco) +
-                                ")";
+            const complemento =
+                campoComplemento
+                    ? campoComplemento.value.trim()
+                    : "";
 
+            const formaPagamento =
+                pagamento
+                    ? pagamento.value
+                    : "";
 
-                            return texto;
+            const troco =
+                campoTrocoInput
+                    ? campoTrocoInput.value.trim()
+                    : "";
 
-                        }
-                    )
-                    .join("\n");
+            const observacao =
+                campoObservacao
+                    ? campoObservacao.value.trim()
+                    : "";
 
+            if (
+                nome === "" ||
+                telefone === "" ||
+                rua === "" ||
+                numero === "" ||
+                bairro === "" ||
+                formaPagamento === ""
+            ) {
 
-            // MENSAGEM WHATSAPP
+                alert(
+                    "Preencha todos os campos obrigatórios da entrega. 💜"
+                );
 
-            let mensagem = "";
+                return;
+            }
 
-            mensagem +=
+            let mensagem =
                 "💜 *NOVO PEDIDO - KE AÇAÍ* 💜\n\n";
-
 
             mensagem +=
                 "👤 *Cliente:* " +
                 nome +
                 "\n";
 
-
             mensagem +=
                 "📱 *Telefone:* " +
                 telefone +
                 "\n\n";
 
-
             mensagem +=
                 "🛒 *PEDIDO*\n\n";
 
+            let totalBruto = 0;
 
             carrinho.forEach(
-                function(item, indice) {
+                function(
+                    item,
+                    indice
+                ) {
+
+                    totalBruto +=
+                        Number(
+                            item.preco
+                        );
 
                     mensagem +=
                         (indice + 1) +
@@ -1556,21 +1638,18 @@ document
                         item.nome +
                         "*\n";
 
-
                     mensagem +=
                         "🥤 " +
                         item.tamanho +
                         "\n";
 
-
                     if (
                         item.adicionais &&
-                        item.adicionais.length
+                        item.adicionais.length > 0
                     ) {
 
                         mensagem +=
                             "➕ Adicionais:\n";
-
 
                         item.adicionais.forEach(
                             function(adicional) {
@@ -1583,73 +1662,68 @@ document
                                         adicional.preco
                                     ) +
                                     ")\n";
-
                             }
                         );
-
                     }
-
 
                     mensagem +=
                         "💰 " +
-                        dinheiro(item.preco) +
+                        dinheiro(
+                            item.preco
+                        ) +
                         "\n\n";
-
                 }
             );
 
-
             mensagem +=
-                "Subtotal: " +
-                dinheiro(subtotal) +
-                "\n";
-
-
-            if (
-                valorDesconto > 0 &&
-                cupomAplicado
-            ) {
-
-                mensagem +=
-                    "🎟️ *Cupom " +
-                    cupomAplicado.codigo +
-                    ": -" +
-                    dinheiro(valorDesconto) +
-                    "*\n";
-
-            }
-
-
-            mensagem +=
-                "💵 *TOTAL DOS PRODUTOS: " +
-                dinheiro(totalProdutos) +
+                "💵 *SUBTOTAL: " +
+                dinheiro(
+                    totalBruto
+                ) +
                 "*\n";
 
+            if (
+                cupomAplicado &&
+                valorDesconto > 0
+            ) {
 
-            if (taxaEntrega > 0) {
+                const codigoCupom =
+                    cupomAplicado.codigo
+                        ? cupomAplicado.codigo
+                        : "Cupom";
 
                 mensagem +=
-                    "🛵 Taxa de entrega: " +
-                    dinheiro(taxaEntrega) +
+                    "🎟️ *Cupom:* " +
+                    codigoCupom +
                     "\n";
 
-
                 mensagem +=
-                    "💜 *TOTAL: " +
-                    dinheiro(totalFinal) +
-                    "*\n\n";
-
-            } else {
-
-                mensagem +=
-                    "🛵 Taxa de entrega: a confirmar\n\n";
-
+                    "💜 *Desconto:* -" +
+                    dinheiro(
+                        valorDesconto
+                    ) +
+                    "\n";
             }
 
+            const totalFinal =
+                Math.max(
+                    0,
+                    totalBruto -
+                    valorDesconto
+                );
+
+            mensagem +=
+                "💰 *TOTAL: " +
+                dinheiro(
+                    totalFinal
+                ) +
+                "*\n";
+
+            mensagem +=
+                "🛵 Taxa de entrega: a confirmar\n\n";
 
             mensagem +=
                 "📍 *ENDEREÇO DE ENTREGA*\n";
-
 
             mensagem +=
                 rua +
@@ -1657,120 +1731,73 @@ document
                 numero +
                 "\n";
 
-
             mensagem +=
                 bairro +
                 "\n";
 
-
-            if (complemento) {
+            if (
+                complemento !== ""
+            ) {
 
                 mensagem +=
                     "Complemento: " +
                     complemento +
                     "\n";
-
             }
-
 
             mensagem +=
                 "\n💳 *Pagamento:* " +
                 formaPagamento +
                 "\n";
 
-
             if (
                 formaPagamento ===
                     "Dinheiro" &&
-                troco
+                troco !== ""
             ) {
 
                 mensagem +=
                     "💵 Troco para: " +
                     troco +
                     "\n";
-
             }
 
-
-            if (observacao) {
+            if (
+                observacao !== ""
+            ) {
 
                 mensagem +=
                     "\n📝 *Observação:* " +
                     observacao +
                     "\n";
-
             }
-
 
             mensagem +=
                 "\n🛵 *PEDIDO PARA ENTREGA*";
 
-
-            // IMPORTANTE:
-            // ABRE O WHATSAPP PRIMEIRO.
-            // ASSIM O NAVEGADOR NÃO BLOQUEIA.
+            const texto =
+                encodeURIComponent(
+                    mensagem
+                );
 
             const link =
                 "https://wa.me/" +
                 whatsapp +
                 "?text=" +
-                encodeURIComponent(
-                    mensagem
-                );
-
+                texto;
 
             window.open(
                 link,
                 "_blank"
             );
-
-
-            // SALVA DEPOIS, SEM BLOQUEAR O WHATSAPP
-
-            salvarPedido({
-
-                cliente: nome,
-
-                telefone: telefone,
-
-                itens: itensPedido,
-
-                valorTotal: totalFinal,
-
-                custo: custo,
-
-                formaPagamento:
-                    formaPagamento,
-
-                endereco:
-                    enderecoCompleto,
-
-                taxaEntrega:
-                    taxaEntrega,
-
-                observacoes:
-                    observacao || null
-
-            });
-
         }
     );
-
-
-// ==========================================
-// INICIAR SITE
-// ==========================================
-
-async function iniciarSite() {
-
-    atualizarCarrinho();
-
-    await carregarConfiguracoes();
-
-    await carregarCardapio();
-
 }
 
 
-iniciarSite();
+// ======================================
+// INICIAR
+// ======================================
+
+atualizarCarrinho();
+carregarCardapio();
